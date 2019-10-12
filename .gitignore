@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/ChustaSoft.Tools.SecureConfig.UnitTests/obj
+/ChustaSoft.Tools.SecureConfig.UnitTests/bin/Debug/netcoreapp2.2
+/ChustaSoft.Tools.SecureConfig/obj
+/ChustaSoft.Tools.SecureConfig/bin/Debug/netcoreapp2.2
