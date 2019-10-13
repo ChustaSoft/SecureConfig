@@ -6,8 +6,10 @@ using System.Collections.Generic;
 namespace ChustaSoft.Tools.SecureConfig.UnitTests.Helpers
 {
 
-    public class ConfigurationManagerUnitTestHelper
+    public class UnitTestHelper
     {
+
+        public const string PRIVATE_TEST_KEY = "5357F6B0313A478A9BF901BB37B4A458";
 
         public static IConfiguration MockedConfiguration(int connectionsNumber = 0)
         {
@@ -18,6 +20,14 @@ namespace ChustaSoft.Tools.SecureConfig.UnitTests.Helpers
             
             return mockedConfiguration.Object;
         }
+
+        public static TestConfig GenerateTestConfig()
+            => new TestConfig {
+                ConnectionStrings = new Dictionary<string, string> { { "Conn1", "TestConn1" }, { "Conn2", "TestConn2" } },
+                TestInt = 5,
+                TestString = "TestString"
+            };
+
 
         private static IConfigurationSection GetMockedConnectionsSection(int connectionsNumber)
         {

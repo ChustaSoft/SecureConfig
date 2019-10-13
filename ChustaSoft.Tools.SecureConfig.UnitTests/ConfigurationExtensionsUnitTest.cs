@@ -12,7 +12,7 @@ namespace ChustaSoft.Tools.SecureConfig.UnitTests
         public void Given_Configuration_When_GetConnectionStrings_Then_DictionaryArrayRetrived()
         {
             var expectedConnections = 5;
-            var configuration = ConfigurationManagerUnitTestHelper.MockedConfiguration(5);
+            var configuration = UnitTestHelper.MockedConfiguration(5);
 
             var result = configuration.GetConnectionStrings();
 
@@ -22,7 +22,7 @@ namespace ChustaSoft.Tools.SecureConfig.UnitTests
         [Fact]
         public void Given_ConfigurationWithEmptyConnections_When_GetConnectionStrings_Then_DictionaryArrayRetrived()
         {
-            var configuration = ConfigurationManagerUnitTestHelper.MockedConfiguration();
+            var configuration = UnitTestHelper.MockedConfiguration();
 
             var result = configuration.GetConnectionStrings();
 

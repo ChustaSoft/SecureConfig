@@ -21,8 +21,8 @@ namespace ChustaSoft.Tools.SecureConfig
             return connections;
         }
 
-        public static TSettings GetSettings<TSettings>(this IConfiguration configuration, string settingsParamName = DEFAULT_SETTINGS_PARAM_NAME) 
-            where TSettings : AppSettingsBase
+        public static TSettings GetSettings<TSettings>(this IConfiguration configuration, string settingsParamName = DEFAULT_SETTINGS_PARAM_NAME)
+            where TSettings : AppSettingsBase, new()
         {
             var settings = configuration.GetSection(settingsParamName).Get<TSettings>();
 
