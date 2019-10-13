@@ -2,7 +2,7 @@
 
 namespace ChustaSoft.Tools.SecureConfig
 {
-    public class AppConfigBase
+    public class AppSettingsBase
     {
 
         public IDictionary<string, string> ConnectionStrings { get; set; }
@@ -10,7 +10,7 @@ namespace ChustaSoft.Tools.SecureConfig
         public string this[string key] { get => ConnectionStrings[key]; }
 
 
-        public AppConfigBase() { }
+        public AppSettingsBase() { }
 
 
     }
