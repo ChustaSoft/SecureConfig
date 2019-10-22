@@ -6,11 +6,7 @@ namespace ChustaSoft.Tools.SecureConfig
     public static class ConfigurationExtensions
     {
 
-        private const string DEFAULT_CONNECTIONS_PARAM_NAME = "ConnectionStrings";
-        private const string DEFAULT_SETTINGS_PARAM_NAME = "AppSettings";
-
-
-        public static IDictionary<string, string> GetConnectionStrings(this IConfiguration configuration, string connectionsParamName = DEFAULT_CONNECTIONS_PARAM_NAME)
+        public static IDictionary<string, string> GetConnectionStrings(this IConfiguration configuration, string connectionsParamName = AppConstants.DEFAULT_CONNECTIONS_PARAM_NAME)
         {
             var connections = new Dictionary<string, string>();
             var connectionStrings = configuration.GetSection(connectionsParamName).GetChildren();
@@ -21,12 +17,23 @@ namespace ChustaSoft.Tools.SecureConfig
             return connections;
         }
 
-        public static TSettings GetSettings<TSettings>(this IConfiguration configuration, string settingsParamName = DEFAULT_SETTINGS_PARAM_NAME)
+        public static TSettings GetSettings<TSettings>(this IConfiguration configuration, string settingsParamName)
             where TSettings : AppSettingsBase, new()
         {
             var settings = configuration.GetSection(settingsParamName).Get<TSettings>();
 
             return settings;
+        }
+
+        public static string GetPrivateKey(this IConfiguration configuration)
+        {
+            return configuration[AppConstants.DEFAULT_SECRETKEY_ENVCONFIG_NAME];
+        }
+
+        public static string GetEncryptedValue<TSettings>(this IConfiguration configuration)
+            where TSettings : AppSettingsBase, new()
+        {
+            return configuration.GetSettings<TSettings>(AppConstants.DEFAULT_CONNECTIONS_PARAM_NAME).EncryptedValue;
         }
 
     }
