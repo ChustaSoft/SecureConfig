@@ -43,7 +43,7 @@ namespace ChustaSoft.Tools.SecureConfig
         {
             var physicalPath = GetPhysicalPath();
             var jObject = GetJsonSettingsObject(physicalPath);
-            string encryptedValue = GetEncryptedValue(jObject);
+            var encryptedValue = GetEncryptedValue(jObject);
 
             return !string.IsNullOrWhiteSpace(encryptedValue);
         }
@@ -52,8 +52,7 @@ namespace ChustaSoft.Tools.SecureConfig
         {
             var physicalPath = GetPhysicalPath();
             var jObject = GetJsonSettingsObject(physicalPath);
-
-            var encryptedObj = JObject.Parse(JsonConvert.SerializeObject(new { EncryptedValue = encryptedValue }));
+            var encryptedObj = JObject.Parse(JsonConvert.SerializeObject(new EncryptedConfiguration{ EncryptedValue = encryptedValue }));
 
             jObject[_section] = JObject.Parse(JsonConvert.SerializeObject(encryptedObj));
 
