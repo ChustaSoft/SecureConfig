@@ -1,7 +1,6 @@
 ﻿using ChustaSoft.Tools.SecureConfig.TestApi.Configuration;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using System.IO;
 
 namespace ChustaSoft.Tools.SecureConfig.TestApi
 {

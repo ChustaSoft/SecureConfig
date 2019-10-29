@@ -9,9 +9,6 @@ namespace ChustaSoft.Tools.SecureConfig
 
         public string this[string key] { get => ConnectionStrings[key]; }
 
-        public string EncryptedValue { get; internal set; }
-
-
         public AppSettingsBase() { }
 
     }

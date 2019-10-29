@@ -24,7 +24,7 @@ namespace ChustaSoft.Tools.SecureConfig.TestApi
             var testApikey = "5357F6B0313A478A9BF901BB37B4A458";
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.RegisterSecureConfig<AppSettings>(_configuration, testApikey);
+            services.SetUpSecureConfig<AppSettings>(_configuration, testApikey);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

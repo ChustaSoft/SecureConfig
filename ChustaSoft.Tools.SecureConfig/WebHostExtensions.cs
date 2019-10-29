@@ -28,21 +28,36 @@ namespace ChustaSoft.Tools.SecureConfig
         {
             using (var scope = webHost.Services.CreateScope())
             {
-                var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-                var settings = config.GetSettings<TSettings>(AppConstants.DEFAULT_SETTINGS_PARAM_NAME);
-                var encryptationKey = config.GetPrivateKey();
-                var encryptedConfiguration = EncrypterManager.Encrypt(settings, encryptationKey);
-                var hostingEnvironment = scope.ServiceProvider.GetRequiredService<IHostingEnvironment>();
-                var optionsMonitor = scope.ServiceProvider.GetRequiredService<IOptionsMonitor<TSettings>>();
-                var writableOptions = new WritableSettings<TSettings>(hostingEnvironment, optionsMonitor, AppConstants.DEFAULT_SETTINGS_PARAM_NAME, "appsettings.json");
+                var writableOptions = GetWritebleSettings<TSettings>(scope);
 
-                writableOptions.Update(s => { s.EncryptedValue = encryptedConfiguration; });
+                if (!writableOptions.IsAlreadyEncrypted())
+                {
+                    var encryptedConfiguration = GetEncryptedConfiguration<TSettings>(scope);
+                    writableOptions.ApplyEncryptation(encryptedConfiguration);
+                }
 
                 ///TODO
-                ///1. Remove other properties once encrypted by reflection
                 ///2. Check environments
             }
         }
 
+        private static IWritableSettings<TSettings> GetWritebleSettings<TSettings>(IServiceScope scope) where TSettings : AppSettingsBase, new()
+        {
+            var hostingEnvironment = scope.ServiceProvider.GetRequiredService<IHostingEnvironment>();
+            var optionsMonitor = scope.ServiceProvider.GetRequiredService<IOptionsMonitor<TSettings>>();
+            var writableOptions = new WritableSettings<TSettings>(hostingEnvironment, optionsMonitor, AppConstants.DEFAULT_SETTINGS_PARAM_NAME, "appsettings.json");
+
+            return writableOptions;
+        }
+
+        private static string GetEncryptedConfiguration<TSettings>(IServiceScope scope) where TSettings : AppSettingsBase, new()
+        {
+            var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+            var settings = config.GetSettings<TSettings>();
+            var encryptationKey = config.GetPrivateKey();
+            var encryptedConfiguration = EncrypterManager.Encrypt(settings, encryptationKey);
+
+            return encryptedConfiguration;
+        }
     }
 }

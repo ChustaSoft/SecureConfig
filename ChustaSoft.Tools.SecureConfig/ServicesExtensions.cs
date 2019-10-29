@@ -6,16 +6,24 @@ namespace ChustaSoft.Tools.SecureConfig
     public static class ServicesExtensions
     {
 
-        public static void RegisterSecureConfig<TSettings>(this IServiceCollection services, IConfiguration configuration, string privateKeyParam)
+        public static void SetUpSecureConfig<TSettings>(this IServiceCollection services, IConfiguration configuration, string privateKeyParam)
             where TSettings : AppSettingsBase, new()
         {
-            var appSettings = configuration.GetSection(AppConstants.DEFAULT_SETTINGS_PARAM_NAME);
+            var appSettings = GetSettings<TSettings>(configuration, privateKeyParam);
 
-            services.ConfigureWritable<TSettings>(appSettings);
+            services.AddSingleton(appSettings);
+        }
 
-            var decryptedConfig = EncrypterManager.Decrypt<TSettings>(configuration.GetEncryptedValue<TSettings>(), privateKeyParam);
 
-            services.AddSingleton(decryptedConfig);
+        private static TSettings GetSettings<TSettings>(IConfiguration configuration, string privateKeyParam) 
+            where TSettings : AppSettingsBase, new()
+        {
+            var encryptedValue = configuration.GetEncryptedValue();
+
+            if (string.IsNullOrEmpty(encryptedValue))
+                return configuration.GetSettings<TSettings>();
+            else
+                return EncrypterManager.Decrypt<TSettings>(encryptedValue, privateKeyParam);
         }
 
     }

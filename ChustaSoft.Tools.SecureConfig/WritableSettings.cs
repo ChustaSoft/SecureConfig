@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
 using System.IO;
 
 namespace ChustaSoft.Tools.SecureConfig
@@ -29,20 +28,40 @@ namespace ChustaSoft.Tools.SecureConfig
             _file = file;
         }
 
+        public bool IsAlreadyEncrypted()
+        {
+            var physicalPath = GetPhysicalPath();
+            var jObject = GetJsonSettingsObject(physicalPath);
+            var encryptedValue = jObject[_section][nameof(EncryptedConfiguration.EncryptedValue)]?.Value<string>();
 
-        public void Update(Action<TSettings> applyChanges)
+            return !string.IsNullOrWhiteSpace(encryptedValue);
+        }
+
+        public void ApplyEncryptation(string encryptedValue)
+        {
+            var physicalPath = GetPhysicalPath();
+            var jObject = GetJsonSettingsObject(physicalPath);
+            
+            var encryptedObj = JObject.Parse(JsonConvert.SerializeObject(new { EncryptedValue = encryptedValue }));
+
+            jObject[_section] = JObject.Parse(JsonConvert.SerializeObject(encryptedObj));
+
+            File.WriteAllText(physicalPath, JsonConvert.SerializeObject(jObject, Formatting.Indented));
+        }
+
+
+        private JObject GetJsonSettingsObject(string physicalPath)
+        {
+            return JsonConvert.DeserializeObject<JObject>(File.ReadAllText(physicalPath));
+        }
+
+        private string GetPhysicalPath()
         {
             var fileProvider = _environment.ContentRootFileProvider;
             var fileInfo = fileProvider.GetFileInfo(_file);
             var physicalPath = fileInfo.PhysicalPath;
-            var jObject = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(physicalPath));
-            var sectionObject = jObject.TryGetValue(_section, out JToken section) ?
-                JsonConvert.DeserializeObject<TSettings>(section.ToString()) : (Value ?? new TSettings());
 
-            applyChanges(sectionObject);
-
-            jObject[_section] = JObject.Parse(JsonConvert.SerializeObject(sectionObject));
-            File.WriteAllText(physicalPath, JsonConvert.SerializeObject(jObject, Formatting.Indented));
+            return physicalPath;
         }
 
     }
