@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ChustaSoft.Tools.SecureConfig.TestApi.Configuration;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace ChustaSoft.Tools.SecureConfig.TestApi.Controllers
@@ -7,6 +8,16 @@ namespace ChustaSoft.Tools.SecureConfig.TestApi.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+
+        private readonly AppSettings _appSettings;
+
+
+        public ValuesController(AppSettings appSettings)
+        {
+            _appSettings = appSettings;
+        }
+
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()

@@ -8,23 +8,48 @@ namespace ChustaSoft.Tools.SecureConfig
     public static class WebHostExtensions
     {
 
+        #region Public methods
+
         public static IWebHost EncryptSettings<TSettings>(this IWebHost webHost, bool encrypt)
             where TSettings : AppSettingsBase, new()
         {
             switch (encrypt)
             {
                 case true:
-                    PerformSettingsEncryptation<TSettings>(webHost);
+                    PerformSettingsEncryption<TSettings>(webHost);
                     break;
 
                 case false:
+                    PerformSettingsDecryption<TSettings>(webHost);
                     break;
             }
 
             return webHost;
         }
 
-        private static void PerformSettingsEncryptation<TSettings>(IWebHost webHost) where TSettings : AppSettingsBase, new()
+        #endregion
+
+
+        #region Private methods
+
+        private static void PerformSettingsDecryption<TSettings>(IWebHost webHost) where TSettings : AppSettingsBase, new()
+        {
+            using (var scope = webHost.Services.CreateScope())
+            {
+                var writableOptions = GetWritebleSettings<TSettings>(scope);
+
+                if (writableOptions.IsAlreadyEncrypted())
+                {
+                    var decryptedConfiguration = GetDecryptedConfiguration<TSettings>(scope);
+                    writableOptions.Apply(decryptedConfiguration);
+                }
+
+                ///TODO
+                ///2. Check environments
+            }
+        }
+
+        private static void PerformSettingsEncryption<TSettings>(IWebHost webHost) where TSettings : AppSettingsBase, new()
         {
             using (var scope = webHost.Services.CreateScope())
             {
@@ -33,7 +58,7 @@ namespace ChustaSoft.Tools.SecureConfig
                 if (!writableOptions.IsAlreadyEncrypted())
                 {
                     var encryptedConfiguration = GetEncryptedConfiguration<TSettings>(scope);
-                    writableOptions.ApplyEncryptation(encryptedConfiguration);
+                    writableOptions.Apply(encryptedConfiguration);
                 }
 
                 ///TODO
@@ -41,7 +66,8 @@ namespace ChustaSoft.Tools.SecureConfig
             }
         }
 
-        private static IWritableSettings<TSettings> GetWritebleSettings<TSettings>(IServiceScope scope) where TSettings : AppSettingsBase, new()
+        private static IWritableSettings<TSettings> GetWritebleSettings<TSettings>(IServiceScope scope)
+            where TSettings : AppSettingsBase, new()
         {
             var hostingEnvironment = scope.ServiceProvider.GetRequiredService<IHostingEnvironment>();
             var optionsMonitor = scope.ServiceProvider.GetRequiredService<IOptionsMonitor<TSettings>>();
@@ -50,7 +76,8 @@ namespace ChustaSoft.Tools.SecureConfig
             return writableOptions;
         }
 
-        private static string GetEncryptedConfiguration<TSettings>(IServiceScope scope) where TSettings : AppSettingsBase, new()
+        private static string GetEncryptedConfiguration<TSettings>(IServiceScope scope)
+            where TSettings : AppSettingsBase, new()
         {
             var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
             var settings = config.GetSettings<TSettings>();
@@ -59,5 +86,19 @@ namespace ChustaSoft.Tools.SecureConfig
 
             return encryptedConfiguration;
         }
+
+        private static TSettings GetDecryptedConfiguration<TSettings>(IServiceScope scope)
+            where TSettings : AppSettingsBase, new()
+        {
+            var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+            var encryptedValue = config.GetEncryptedValue();
+            var encryptationKey = config.GetPrivateKey();
+            var settings = EncrypterManager.Decrypt<TSettings>(encryptedValue, encryptationKey);
+
+            return settings;
+        }
+
+        #endregion
+
     }
 }

@@ -10,6 +10,8 @@ namespace ChustaSoft.Tools.SecureConfig
         where TSettings : AppSettingsBase, new()
     {
 
+        #region Fields & Properties
+
         private readonly IHostingEnvironment _environment;
         private readonly IOptionsMonitor<TSettings> _options;
         private readonly string _section;
@@ -19,6 +21,10 @@ namespace ChustaSoft.Tools.SecureConfig
         public TSettings Value => _options.CurrentValue;
         public TSettings Get(string name) => _options.Get(name);
 
+        #endregion
+
+
+        #region Constructor
 
         public WritableSettings(IHostingEnvironment environment, IOptionsMonitor<TSettings> options, string section, string file)
         {
@@ -28,20 +34,25 @@ namespace ChustaSoft.Tools.SecureConfig
             _file = file;
         }
 
+        #endregion
+
+
+        #region Public methods
+
         public bool IsAlreadyEncrypted()
         {
             var physicalPath = GetPhysicalPath();
             var jObject = GetJsonSettingsObject(physicalPath);
-            var encryptedValue = jObject[_section][nameof(EncryptedConfiguration.EncryptedValue)]?.Value<string>();
+            string encryptedValue = GetEncryptedValue(jObject);
 
             return !string.IsNullOrWhiteSpace(encryptedValue);
         }
 
-        public void ApplyEncryptation(string encryptedValue)
+        public void Apply(string encryptedValue)
         {
             var physicalPath = GetPhysicalPath();
             var jObject = GetJsonSettingsObject(physicalPath);
-            
+
             var encryptedObj = JObject.Parse(JsonConvert.SerializeObject(new { EncryptedValue = encryptedValue }));
 
             jObject[_section] = JObject.Parse(JsonConvert.SerializeObject(encryptedObj));
@@ -49,6 +60,21 @@ namespace ChustaSoft.Tools.SecureConfig
             File.WriteAllText(physicalPath, JsonConvert.SerializeObject(jObject, Formatting.Indented));
         }
 
+        public void Apply(TSettings decryptedObj)
+        {
+            var physicalPath = GetPhysicalPath();
+            var jObject = GetJsonSettingsObject(physicalPath);
+            var encryptedValue = GetEncryptedValue(jObject);
+
+            jObject[_section] = JObject.Parse(JsonConvert.SerializeObject(decryptedObj));
+
+            File.WriteAllText(physicalPath, JsonConvert.SerializeObject(jObject, Formatting.Indented));
+        }
+
+        #endregion
+
+
+        #region Private methods
 
         private JObject GetJsonSettingsObject(string physicalPath)
         {
@@ -63,6 +89,13 @@ namespace ChustaSoft.Tools.SecureConfig
 
             return physicalPath;
         }
+
+        private string GetEncryptedValue(JObject jObject)
+        {
+            return jObject[_section][nameof(EncryptedConfiguration.EncryptedValue)]?.Value<string>();
+        }
+
+        #endregion
 
     }
 }
