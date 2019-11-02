@@ -6,8 +6,8 @@ using System.IO;
 
 namespace ChustaSoft.Tools.SecureConfig
 {
-    public class WritableSettings<TSettings> : IWritableSettings<TSettings> 
-        where TSettings : AppSettingsBase, new()
+    public class WritableSettings<TSettings> : IWritableSettings<TSettings>
+        where TSettings : class, new()
     {
 
         #region Fields & Properties

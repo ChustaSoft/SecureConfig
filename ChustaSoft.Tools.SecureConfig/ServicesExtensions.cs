@@ -7,7 +7,7 @@ namespace ChustaSoft.Tools.SecureConfig
     {
 
         public static void SetUpSecureConfig<TSettings>(this IServiceCollection services, IConfiguration configuration, string privateKeyParam)
-            where TSettings : AppSettingsBase, new()
+            where TSettings : class, new()
         {
             var appSettings = GetSettings<TSettings>(configuration, privateKeyParam);
 
@@ -16,7 +16,7 @@ namespace ChustaSoft.Tools.SecureConfig
 
 
         private static TSettings GetSettings<TSettings>(IConfiguration configuration, string privateKeyParam) 
-            where TSettings : AppSettingsBase, new()
+            where TSettings : new()
         {
             var encryptedValue = configuration.GetEncryptedValue();
 

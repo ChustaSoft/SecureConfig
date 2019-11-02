@@ -3,7 +3,7 @@
 namespace ChustaSoft.Tools.SecureConfig
 {
     public interface IWritableSettings<TSettings> : IOptionsSnapshot<TSettings> 
-        where TSettings : AppSettingsBase, new()
+        where TSettings : class, new()
     {
 
         bool IsAlreadyEncrypted();

@@ -81,8 +81,9 @@ namespace ChustaSoft.Tools.SecureConfig.UnitTests.Helpers
         }
     }
 
-    public class TestConfig : AppSettingsBase
+    public class TestConfig
     {
+        public IDictionary<string, string> ConnectionStrings { get; set; }
         public int TestInt { get; set; }
         public string TestString { get; set; }
     }

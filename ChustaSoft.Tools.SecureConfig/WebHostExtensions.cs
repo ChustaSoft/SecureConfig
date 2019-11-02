@@ -23,7 +23,7 @@ namespace ChustaSoft.Tools.SecureConfig
         #region Public methods
 
         public static IWebHost EncryptSettings<TSettings>(this IWebHost webHost, bool encrypt)
-            where TSettings : AppSettingsBase, new()
+            where TSettings : class, new()
         {
             switch (encrypt)
             {
@@ -44,7 +44,8 @@ namespace ChustaSoft.Tools.SecureConfig
 
         #region Private methods
 
-        private static void PerformSettingsDecryption<TSettings>(IWebHost webHost) where TSettings : AppSettingsBase, new()
+        private static void PerformSettingsDecryption<TSettings>(IWebHost webHost)
+            where TSettings : class, new()
         {
             using (var scope = webHost.Services.CreateScope())
             {
@@ -61,7 +62,8 @@ namespace ChustaSoft.Tools.SecureConfig
             }
         }
 
-        private static void PerformSettingsEncryption<TSettings>(IWebHost webHost) where TSettings : AppSettingsBase, new()
+        private static void PerformSettingsEncryption<TSettings>(IWebHost webHost)
+            where TSettings : class, new()
         {
             using (var scope = webHost.Services.CreateScope())
             {
@@ -79,7 +81,7 @@ namespace ChustaSoft.Tools.SecureConfig
         }
 
         private static IWritableSettings<TSettings> GetWritebleSettings<TSettings>(IServiceScope scope, string fileName)
-            where TSettings : AppSettingsBase, new()
+            where TSettings : class, new()
         {
             var hostingEnvironment = scope.ServiceProvider.GetRequiredService<IHostingEnvironment>();
             var optionsMonitor = scope.ServiceProvider.GetRequiredService<IOptionsMonitor<TSettings>>();
@@ -89,7 +91,7 @@ namespace ChustaSoft.Tools.SecureConfig
         }
 
         private static string GetEncryptedConfiguration<TSettings>(IServiceScope scope)
-            where TSettings : AppSettingsBase, new()
+            where TSettings : class, new()
         {
             var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
             var settings = config.GetSettings<TSettings>();
@@ -100,7 +102,7 @@ namespace ChustaSoft.Tools.SecureConfig
         }
 
         private static TSettings GetDecryptedConfiguration<TSettings>(IServiceScope scope)
-            where TSettings : AppSettingsBase, new()
+            where TSettings : class, new()
         {
             var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
             var encryptedValue = config.GetEncryptedValue();

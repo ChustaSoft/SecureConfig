@@ -7,7 +7,7 @@ namespace ChustaSoft.Tools.SecureConfig
     {
 
         public static string Encrypt<TSettings>(TSettings appSettings, string privateKey)
-            where TSettings : AppSettingsBase, new()
+            where TSettings : new()
         {
             var serializedSettings = JsonConvert.SerializeObject(appSettings);
             var configEncrypted = EncryptationHelper.Encrypt(serializedSettings, privateKey);
@@ -16,7 +16,7 @@ namespace ChustaSoft.Tools.SecureConfig
         }
 
         public static TSettings Decrypt<TSettings>(string encryptedResult, string privateKey)
-            where TSettings : AppSettingsBase, new()
+            where TSettings : new()
         {
             var decryptedJson = EncryptationHelper.Decrypt(encryptedResult, privateKey);
             var deserializedSettings = JsonConvert.DeserializeObject<TSettings>(decryptedJson);
