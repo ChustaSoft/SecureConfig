@@ -10,7 +10,7 @@ namespace ChustaSoft.Tools.SecureConfig.TestApi
         {
             CreateWebHostBuilder(args)
                 .Build()
-                .EncryptSettings<AppSettings>(false)
+                .EncryptSettings<AppSettings>(true)
                 .Run();
         }
 

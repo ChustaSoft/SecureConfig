@@ -91,7 +91,7 @@ namespace ChustaSoft.Tools.SecureConfig
 
         private string GetEncryptedValue(JObject jObject)
         {
-            return jObject[_section][nameof(EncryptedConfiguration.EncryptedValue)]?.Value<string>();
+            return jObject[_section]?[nameof(EncryptedConfiguration.EncryptedValue)]?.Value<string>();
         }
 
         #endregion
