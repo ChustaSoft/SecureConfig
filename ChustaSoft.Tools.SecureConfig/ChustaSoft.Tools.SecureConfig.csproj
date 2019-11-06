@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <PackageId>ChustaSoft.Tools.SecureConfig</PackageId>
     <RootNamespace>ChustaSoft.Tools.SecureConfig</RootNamespace>
-    <Description>Tool with Common Data used in multiple .NET applications like Countries, Cities, Currencies, ExchangeRates...</Description>
+    <Description>This tool allows to encrypt configuration sections on app.settings files, and decrypt the information in runtime adding those configuration as a singleton inside the application.</Description>
     <Copyright>ChustaSoft</Copyright>
     <Authors>Xelit3</Authors>
     <Company>ChustaSoft</Company>
