@@ -21,17 +21,17 @@ namespace ChustaSoft.Tools.SecureConfig
 
         #region Public methods
 
-        public static IWebHost EncryptSettings<TSettings>(this IWebHost webHost, bool encrypt, string secretKeyParam = AppConstants.DEFAULT_SECRETKEY_ENVCONFIG_NAME)
+        public static IWebHost EncryptSettings<TSettings>(this IWebHost webHost, bool encrypt)
             where TSettings : class, new()
         {
             switch (encrypt)
             {
                 case true:
-                    PerformSettingsEncryption<TSettings>(webHost, secretKeyParam);
+                    PerformSettingsEncryption<TSettings>(webHost);
                     break;
 
                 case false:
-                    PerformSettingsDecryption<TSettings>(webHost, secretKeyParam);
+                    PerformSettingsDecryption<TSettings>(webHost);
                     break;
             }
 
@@ -43,7 +43,7 @@ namespace ChustaSoft.Tools.SecureConfig
 
         #region Private methods
 
-        private static void PerformSettingsDecryption<TSettings>(IWebHost webHost, string secretKeyParam)
+        private static void PerformSettingsDecryption<TSettings>(IWebHost webHost)
             where TSettings : class, new()
         {
             using (var scope = webHost.Services.CreateScope())
@@ -54,14 +54,14 @@ namespace ChustaSoft.Tools.SecureConfig
 
                     if (writableOptions.IsAlreadyEncrypted())
                     {
-                        var decryptedConfiguration = GetDecryptedConfiguration<TSettings>(scope, secretKeyParam);
+                        var decryptedConfiguration = GetDecryptedConfiguration<TSettings>(scope);
                         writableOptions.Apply(decryptedConfiguration);
                     }
                 }
             }
         }
 
-        private static void PerformSettingsEncryption<TSettings>(IWebHost webHost, string secretKeyParam)
+        private static void PerformSettingsEncryption<TSettings>(IWebHost webHost)
             where TSettings : class, new()
         {
             using (var scope = webHost.Services.CreateScope())
@@ -72,7 +72,7 @@ namespace ChustaSoft.Tools.SecureConfig
 
                     if (!writableOptions.IsAlreadyEncrypted())
                     {
-                        var encryptedConfiguration = GetEncryptedConfiguration<TSettings>(scope, secretKeyParam);
+                        var encryptedConfiguration = GetEncryptedConfiguration<TSettings>(scope);
                         writableOptions.Apply(encryptedConfiguration);
                     }
                 }
@@ -89,23 +89,23 @@ namespace ChustaSoft.Tools.SecureConfig
             return writableOptions;
         }
 
-        private static string GetEncryptedConfiguration<TSettings>(IServiceScope scope, string secretKeyParam)
+        private static string GetEncryptedConfiguration<TSettings>(IServiceScope scope)
             where TSettings : class, new()
         {
             var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
             var settings = config.GetSettings<TSettings>();
-            var encryptationKey = config.GetPrivateKey(secretKeyParam);
+            var encryptationKey = scope.ServiceProvider.GetRequiredService<EncryptionKey>().Key;
             var encryptedConfiguration = EncrypterManager.Encrypt(settings, encryptationKey);
 
             return encryptedConfiguration;
         }
 
-        private static TSettings GetDecryptedConfiguration<TSettings>(IServiceScope scope, string secretKeyParam)
+        private static TSettings GetDecryptedConfiguration<TSettings>(IServiceScope scope)
             where TSettings : class, new()
         {
             var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
             var encryptedValue = config.GetEncryptedValue();
-            var encryptationKey = config.GetPrivateKey(secretKeyParam);
+            var encryptationKey = scope.ServiceProvider.GetRequiredService<EncryptionKey>().Key;
             var settings = EncrypterManager.Decrypt<TSettings>(encryptedValue, encryptationKey);
 
             return settings;

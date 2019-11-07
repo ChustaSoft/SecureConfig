@@ -25,11 +25,6 @@ namespace ChustaSoft.Tools.SecureConfig
             return settings;
         }
 
-        public static string GetPrivateKey(this IConfiguration configuration, string secretKeyParam)
-        {
-            return configuration[secretKeyParam];
-        }
-
         public static string GetEncryptedValue(this IConfiguration configuration)
         {
             return configuration.GetSettings<EncryptedConfiguration>()?.EncryptedValue;

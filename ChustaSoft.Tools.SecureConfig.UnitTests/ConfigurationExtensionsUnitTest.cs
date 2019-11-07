@@ -37,17 +37,5 @@ namespace ChustaSoft.Tools.SecureConfig.UnitTests
             Assert.Throws<NullReferenceException>(() => configuration.GetConnectionStrings());
         }
 
-        //Invalid Test, not possible to mock Get extension method from Microsoft.Extensions.Configuration.Binder
-        //[Fact]
-        //public void Given_ConfigurationAndType_When_GetSettings_Then_ObjectRetrived()
-        //{
-        //    var configuration = ConfigurationManagerUnitTestHelper.MockedConfiguration();
-
-        //    var result = configuration.GetSettings<TestConfig>();
-
-        //    Assert.Equal(result.TestInt, TestConstants.TEST_CONFIG_INT);
-        //    Assert.Equal(result.TestString, TestConstants.TEST_CONFIG_STRING);
-        //}
-
     }
 }
