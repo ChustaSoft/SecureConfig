@@ -11,6 +11,7 @@ namespace ChustaSoft.Tools.SecureConfig
         {
             var appSettings = GetSettings<TSettings>(configuration, privateKeyParam);
 
+            services.AddSingleton(new EncryptionKey { Key = privateKeyParam });
             services.AddSingleton(appSettings);
         }
 

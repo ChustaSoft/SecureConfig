@@ -5,7 +5,6 @@ using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 
 namespace ChustaSoft.Tools.SecureConfig
 {
@@ -49,7 +48,7 @@ namespace ChustaSoft.Tools.SecureConfig
         {
             using (var scope = webHost.Services.CreateScope())
             {
-                foreach (var environmentFile in GetSettingFiles())
+                foreach (var environmentFile in GetSettingFiles(scope))
                 {
                     var writableOptions = GetWritebleSettings<TSettings>(scope, environmentFile);
 
@@ -67,7 +66,7 @@ namespace ChustaSoft.Tools.SecureConfig
         {
             using (var scope = webHost.Services.CreateScope())
             {
-                foreach (var environmentFile in GetSettingFiles())
+                foreach (var environmentFile in GetSettingFiles(scope))
                 {
                     var writableOptions = GetWritebleSettings<TSettings>(scope, environmentFile);
 
@@ -95,7 +94,7 @@ namespace ChustaSoft.Tools.SecureConfig
         {
             var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
             var settings = config.GetSettings<TSettings>();
-            var encryptationKey = config.GetPrivateKey();
+            var encryptationKey = scope.ServiceProvider.GetRequiredService<EncryptionKey>().Key;
             var encryptedConfiguration = EncrypterManager.Encrypt(settings, encryptationKey);
 
             return encryptedConfiguration;
@@ -106,15 +105,15 @@ namespace ChustaSoft.Tools.SecureConfig
         {
             var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
             var encryptedValue = config.GetEncryptedValue();
-            var encryptationKey = config.GetPrivateKey();
+            var encryptationKey = scope.ServiceProvider.GetRequiredService<EncryptionKey>().Key;
             var settings = EncrypterManager.Decrypt<TSettings>(encryptedValue, encryptationKey);
 
             return settings;
         }
 
-        private static IEnumerable<string> GetSettingFiles()
+        private static IEnumerable<string> GetSettingFiles(IServiceScope scope)
         {
-            var assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var assemblyFolder = scope.ServiceProvider.GetRequiredService<IHostingEnvironment>().ContentRootPath; ;
             var files = Directory.GetFiles(assemblyFolder, SETTINGS_FILE_PATTERN).ToList();
 
             files = files.Select(x => x.Substring(x.LastIndexOf('\\') + 1)).ToList();
