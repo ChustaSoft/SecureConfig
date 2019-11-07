@@ -5,7 +5,6 @@ using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 
 namespace ChustaSoft.Tools.SecureConfig
 {
@@ -22,17 +21,17 @@ namespace ChustaSoft.Tools.SecureConfig
 
         #region Public methods
 
-        public static IWebHost EncryptSettings<TSettings>(this IWebHost webHost, bool encrypt)
+        public static IWebHost EncryptSettings<TSettings>(this IWebHost webHost, bool encrypt, string secretKeyParam = AppConstants.DEFAULT_SECRETKEY_ENVCONFIG_NAME)
             where TSettings : class, new()
         {
             switch (encrypt)
             {
                 case true:
-                    PerformSettingsEncryption<TSettings>(webHost);
+                    PerformSettingsEncryption<TSettings>(webHost, secretKeyParam);
                     break;
 
                 case false:
-                    PerformSettingsDecryption<TSettings>(webHost);
+                    PerformSettingsDecryption<TSettings>(webHost, secretKeyParam);
                     break;
             }
 
@@ -44,36 +43,36 @@ namespace ChustaSoft.Tools.SecureConfig
 
         #region Private methods
 
-        private static void PerformSettingsDecryption<TSettings>(IWebHost webHost)
+        private static void PerformSettingsDecryption<TSettings>(IWebHost webHost, string secretKeyParam)
             where TSettings : class, new()
         {
             using (var scope = webHost.Services.CreateScope())
             {
-                foreach (var environmentFile in GetSettingFiles())
+                foreach (var environmentFile in GetSettingFiles(scope))
                 {
                     var writableOptions = GetWritebleSettings<TSettings>(scope, environmentFile);
 
                     if (writableOptions.IsAlreadyEncrypted())
                     {
-                        var decryptedConfiguration = GetDecryptedConfiguration<TSettings>(scope);
+                        var decryptedConfiguration = GetDecryptedConfiguration<TSettings>(scope, secretKeyParam);
                         writableOptions.Apply(decryptedConfiguration);
                     }
                 }
             }
         }
 
-        private static void PerformSettingsEncryption<TSettings>(IWebHost webHost)
+        private static void PerformSettingsEncryption<TSettings>(IWebHost webHost, string secretKeyParam)
             where TSettings : class, new()
         {
             using (var scope = webHost.Services.CreateScope())
             {
-                foreach (var environmentFile in GetSettingFiles())
+                foreach (var environmentFile in GetSettingFiles(scope))
                 {
                     var writableOptions = GetWritebleSettings<TSettings>(scope, environmentFile);
 
                     if (!writableOptions.IsAlreadyEncrypted())
                     {
-                        var encryptedConfiguration = GetEncryptedConfiguration<TSettings>(scope);
+                        var encryptedConfiguration = GetEncryptedConfiguration<TSettings>(scope, secretKeyParam);
                         writableOptions.Apply(encryptedConfiguration);
                     }
                 }
@@ -90,31 +89,31 @@ namespace ChustaSoft.Tools.SecureConfig
             return writableOptions;
         }
 
-        private static string GetEncryptedConfiguration<TSettings>(IServiceScope scope)
+        private static string GetEncryptedConfiguration<TSettings>(IServiceScope scope, string secretKeyParam)
             where TSettings : class, new()
         {
             var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
             var settings = config.GetSettings<TSettings>();
-            var encryptationKey = config.GetPrivateKey();
+            var encryptationKey = config.GetPrivateKey(secretKeyParam);
             var encryptedConfiguration = EncrypterManager.Encrypt(settings, encryptationKey);
 
             return encryptedConfiguration;
         }
 
-        private static TSettings GetDecryptedConfiguration<TSettings>(IServiceScope scope)
+        private static TSettings GetDecryptedConfiguration<TSettings>(IServiceScope scope, string secretKeyParam)
             where TSettings : class, new()
         {
             var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
             var encryptedValue = config.GetEncryptedValue();
-            var encryptationKey = config.GetPrivateKey();
+            var encryptationKey = config.GetPrivateKey(secretKeyParam);
             var settings = EncrypterManager.Decrypt<TSettings>(encryptedValue, encryptationKey);
 
             return settings;
         }
 
-        private static IEnumerable<string> GetSettingFiles()
+        private static IEnumerable<string> GetSettingFiles(IServiceScope scope)
         {
-            var assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var assemblyFolder = scope.ServiceProvider.GetRequiredService<IHostingEnvironment>().ContentRootPath; ;
             var files = Directory.GetFiles(assemblyFolder, SETTINGS_FILE_PATTERN).ToList();
 
             files = files.Select(x => x.Substring(x.LastIndexOf('\\') + 1)).ToList();

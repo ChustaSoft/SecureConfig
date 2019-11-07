@@ -25,9 +25,9 @@ namespace ChustaSoft.Tools.SecureConfig
             return settings;
         }
 
-        public static string GetPrivateKey(this IConfiguration configuration)
+        public static string GetPrivateKey(this IConfiguration configuration, string secretKeyParam)
         {
-            return configuration[AppConstants.DEFAULT_SECRETKEY_ENVCONFIG_NAME];
+            return configuration[secretKeyParam];
         }
 
         public static string GetEncryptedValue(this IConfiguration configuration)
