@@ -12,7 +12,12 @@ namespace ChustaSoft.Tools.SecureConfig
 
         #region Fields & Properties
 
+#if (NETCOREAPP3_0 || NETCOREAPP3_1)
+        private readonly IWebHostEnvironment _environment;
+#elif (NETCOREAPP2_1 || NETCOREAPP2_2)
         private readonly IHostingEnvironment _environment;
+#else
+#endif
         private readonly IOptionsMonitor<TSettings> _options;
         private readonly string _section;
         private readonly string _file;
@@ -26,6 +31,15 @@ namespace ChustaSoft.Tools.SecureConfig
 
         #region Constructor
 
+#if (NETCOREAPP3_0 || NETCOREAPP3_1)
+        public WritableSettings(IWebHostEnvironment environment, IOptionsMonitor<TSettings> options, string section, string file)
+        {
+            _environment = environment;
+            _options = options;
+            _section = section;
+            _file = file;
+        }
+#elif (NETCOREAPP2_1 || NETCOREAPP2_2)
         public WritableSettings(IHostingEnvironment environment, IOptionsMonitor<TSettings> options, string section, string file)
         {
             _environment = environment;
@@ -33,6 +47,8 @@ namespace ChustaSoft.Tools.SecureConfig
             _section = section;
             _file = file;
         }
+#else
+#endif
 
         #endregion
 
@@ -52,7 +68,7 @@ namespace ChustaSoft.Tools.SecureConfig
         {
             var physicalPath = GetPhysicalPath();
             var jObject = GetJsonSettingsObject(physicalPath);
-            var encryptedObj = JObject.Parse(JsonConvert.SerializeObject(new EncryptedConfiguration{ EncryptedValue = encryptedValue }));
+            var encryptedObj = JObject.Parse(JsonConvert.SerializeObject(new EncryptedConfiguration { EncryptedValue = encryptedValue }));
 
             jObject[_section] = JObject.Parse(JsonConvert.SerializeObject(encryptedObj));
 

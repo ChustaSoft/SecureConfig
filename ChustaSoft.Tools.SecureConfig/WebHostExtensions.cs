@@ -82,7 +82,12 @@ namespace ChustaSoft.Tools.SecureConfig
         private static IWritableSettings<TSettings> GetWritebleSettings<TSettings>(IServiceScope scope, string fileName)
             where TSettings : class, new()
         {
+#if (NETCOREAPP3_0 || NETCOREAPP3_1)
+            var hostingEnvironment = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
+#elif (NETCOREAPP2_1 || NETCOREAPP2_2)
             var hostingEnvironment = scope.ServiceProvider.GetRequiredService<IHostingEnvironment>();
+#else
+#endif      
             var optionsMonitor = scope.ServiceProvider.GetRequiredService<IOptionsMonitor<TSettings>>();
             var writableOptions = new WritableSettings<TSettings>(hostingEnvironment, optionsMonitor, AppConstants.DEFAULT_SETTINGS_PARAM_NAME, fileName);
 
@@ -113,7 +118,12 @@ namespace ChustaSoft.Tools.SecureConfig
 
         private static IEnumerable<string> GetSettingFiles(IServiceScope scope)
         {
-            var assemblyFolder = scope.ServiceProvider.GetRequiredService<IHostingEnvironment>().ContentRootPath; ;
+#if (NETCOREAPP3_0 || NETCOREAPP3_1)
+            var assemblyFolder = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>().ContentRootPath;
+#elif (NETCOREAPP2_1 || NETCOREAPP2_2)
+            var assemblyFolder = scope.ServiceProvider.GetRequiredService<IHostingEnvironment>().ContentRootPath;
+#else
+#endif
             var files = Directory.GetFiles(assemblyFolder, SETTINGS_FILE_PATTERN).ToList();
 
             files = files.Select(x => x.Substring(x.LastIndexOf('\\') + 1)).ToList();
