@@ -7,6 +7,8 @@
 /ChustaSoft.Tools.SecureConfig.UnitTests/bin
 /ChustaSoft.Tools.SecureConfig/obj
 /ChustaSoft.Tools.SecureConfig/bin
-/ChustaSoft.Tools.SecureConfig.TestApi/Properties/launchSettings.json
-/ChustaSoft.Tools.SecureConfig.TestApi/obj
-/ChustaSoft.Tools.SecureConfig.TestApi/bin
+/ChustaSoft.Tools.SecureConfig.NetCore2.TestApi/Properties/launchSettings.json
+/ChustaSoft.Tools.SecureConfig.NetCore2.TestApi/obj
+/ChustaSoft.Tools.SecureConfig.NetCore2.TestApi/bin
+/ChustaSoft.Tools.SecureConfig.NetCore3.TestApi/bin/Debug/netcoreapp3.0
+/ChustaSoft.Tools.SecureConfig.NetCore3.TestApi/obj
