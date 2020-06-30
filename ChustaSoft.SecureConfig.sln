@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Tests", "2. Tests", "{D0
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Examples", "3. Examples", "{F4D6CFF4-7A02-4CB4-A79E-DBAFFCEFBB20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChustaSoft.Tools.SecureConfig.NetCore3.TestApi", "ChustaSoft.Tools.SecureConfig.NetCore3.TestApi\ChustaSoft.Tools.SecureConfig.NetCore3.TestApi.csproj", "{CB789173-FC45-4F8D-A6C8-2E5581FEC606}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.SecureConfig.NetCore3.TestApi", "ChustaSoft.Tools.SecureConfig.NetCore3.TestApi\ChustaSoft.Tools.SecureConfig.NetCore3.TestApi.csproj", "{CB789173-FC45-4F8D-A6C8-2E5581FEC606}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

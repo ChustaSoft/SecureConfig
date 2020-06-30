@@ -1,14 +1,16 @@
 using ChustaSoft.Tools.SecureConfig.UnitTests.Helpers;
 using Microsoft.Extensions.Configuration;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
-using Xunit;
 
 namespace ChustaSoft.Tools.SecureConfig.UnitTests
 {
+
+    [TestClass]
     public class ConfigurationExtensionsUnitTest
     {
-        [Fact]
+        [TestMethod]
         public void Given_Configuration_When_GetConnectionStrings_Then_DictionaryArrayRetrived()
         {
             var expectedConnections = 5;
@@ -16,25 +18,25 @@ namespace ChustaSoft.Tools.SecureConfig.UnitTests
 
             var result = configuration.GetConnectionStrings();
 
-            Assert.Equal(expectedConnections, result.Count);
+            Assert.AreEqual(expectedConnections, result.Count);
         }
 
-        [Fact]
+        [TestMethod]
         public void Given_ConfigurationWithEmptyConnections_When_GetConnectionStrings_Then_DictionaryArrayRetrived()
         {
             var configuration = UnitTestHelper.MockedConfiguration();
 
             var result = configuration.GetConnectionStrings();
 
-            Assert.False(result.Any());
+            Assert.IsFalse(result.Any());
         }
 
-        [Fact]
+        [TestMethod]
         public void Given_NullConfiguration_When_GetConnectionStrings_Then_NullReferenceExceptionThrown()
         {
             IConfiguration configuration = null;
 
-            Assert.Throws<NullReferenceException>(() => configuration.GetConnectionStrings());
+            Assert.ThrowsException<NullReferenceException>(() => configuration.GetConnectionStrings());
         }
 
     }
