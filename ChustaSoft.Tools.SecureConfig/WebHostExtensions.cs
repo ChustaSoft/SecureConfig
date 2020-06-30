@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using AspNetHosting = Microsoft.AspNetCore.Hosting;
+using CommonHosting = Microsoft.Extensions.Hosting;
 
 namespace ChustaSoft.Tools.SecureConfig
 {
@@ -21,32 +23,54 @@ namespace ChustaSoft.Tools.SecureConfig
 
         #region Public methods
 
-        public static IWebHost EncryptSettings<TSettings>(this IWebHost webHost, bool encrypt)
+
+        #if (NETCOREAPP3_0 || NETCOREAPP3_1)
+        public static CommonHosting.IHost EncryptSettings<TSettings>(this CommonHosting.IHost host, bool encrypt)
             where TSettings : class, new()
         {
             switch (encrypt)
             {
                 case true:
-                    PerformSettingsEncryption<TSettings>(webHost);
+                    PerformSettingsEncryption<TSettings>(host.Services);
                     break;
 
                 case false:
-                    PerformSettingsDecryption<TSettings>(webHost);
+                    PerformSettingsDecryption<TSettings>(host.Services);
+                    break;
+            }
+
+            return host;
+        }
+
+        #elif (NETCOREAPP2_1 || NETCOREAPP2_2)
+        public static AspNetHosting.IWebHost EncryptSettings<TSettings>(this AspNetHosting.IWebHost webHost, bool encrypt)
+            where TSettings : class, new()
+        {
+            switch (encrypt)
+            {
+                case true:
+                    PerformSettingsEncryption<TSettings>(webHost.Services);
+                    break;
+
+                case false:
+                    PerformSettingsDecryption<TSettings>(webHost.Services);
                     break;
             }
 
             return webHost;
         }
+        #else
+        #endif
 
         #endregion
 
 
         #region Private methods
 
-        private static void PerformSettingsDecryption<TSettings>(IWebHost webHost)
+        private static void PerformSettingsDecryption<TSettings>(IServiceProvider services)
             where TSettings : class, new()
         {
-            using (var scope = webHost.Services.CreateScope())
+            using (var scope = services.CreateScope())
             {
                 foreach (var environmentFile in GetSettingFiles(scope))
                 {
@@ -61,10 +85,10 @@ namespace ChustaSoft.Tools.SecureConfig
             }
         }
 
-        private static void PerformSettingsEncryption<TSettings>(IWebHost webHost)
+        private static void PerformSettingsEncryption<TSettings>(IServiceProvider services)
             where TSettings : class, new()
         {
-            using (var scope = webHost.Services.CreateScope())
+            using (var scope = services.CreateScope())
             {
                 foreach (var environmentFile in GetSettingFiles(scope))
                 {
@@ -83,9 +107,9 @@ namespace ChustaSoft.Tools.SecureConfig
             where TSettings : class, new()
         {
 #if (NETCOREAPP3_0 || NETCOREAPP3_1)
-            var hostingEnvironment = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
+            var hostingEnvironment = scope.ServiceProvider.GetRequiredService<AspNetHosting.IWebHostEnvironment>();
 #elif (NETCOREAPP2_1 || NETCOREAPP2_2)
-            var hostingEnvironment = scope.ServiceProvider.GetRequiredService<IHostingEnvironment>();
+            var hostingEnvironment = scope.ServiceProvider.GetRequiredService<AspNetHosting.IHostingEnvironment>();
 #else
 #endif      
             var optionsMonitor = scope.ServiceProvider.GetRequiredService<IOptionsMonitor<TSettings>>();
@@ -119,9 +143,9 @@ namespace ChustaSoft.Tools.SecureConfig
         private static IEnumerable<string> GetSettingFiles(IServiceScope scope)
         {
 #if (NETCOREAPP3_0 || NETCOREAPP3_1)
-            var assemblyFolder = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>().ContentRootPath;
+            var assemblyFolder = scope.ServiceProvider.GetRequiredService<AspNetHosting.IWebHostEnvironment>().ContentRootPath;
 #elif (NETCOREAPP2_1 || NETCOREAPP2_2)
-            var assemblyFolder = scope.ServiceProvider.GetRequiredService<IHostingEnvironment>().ContentRootPath;
+            var assemblyFolder = scope.ServiceProvider.GetRequiredService<AspNetHosting.IHostingEnvironment>().ContentRootPath;
 #else
 #endif
             var files = Directory.GetFiles(assemblyFolder, SETTINGS_FILE_PATTERN).ToList();

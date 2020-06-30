@@ -5,8 +5,10 @@
 Tool to give security to the configurations of an ASPNET Core application by encrypting sensitive information and handling in a secure way
 
 Prerequisites:
-· Versions 2.x.x
- - NET Core 2.2 and above
+- NetCore 2.x
+  - Support from version 1.0.0
+- NetCore 3.x
+  - Support from version 1.2.0
 
 
 · Description:
@@ -18,7 +20,7 @@ This tool allows to encrypt configuration sections on app.settings files, and de
 
 1. Install ChustaSoft.Tools.SecureConfig package via NuGet Package manager
 
-2. Setup a 32 hexadecimal character private key. (ie: a GUID) in a secure way, ie: as a environment variable
+2. Setup a private key in a secure way (ie: as a environment variable), SecureConfig will use it for encrypt and decrypt the settings files
 
 3. Create a Settings object inside the project, should match the section that will be encrypted
 
@@ -37,8 +39,10 @@ This tool allows to encrypt configuration sections on app.settings files, and de
 	
 7. Inject the settings class object in the class that the project will need, SecureConfig manage this class as a Singleton in the application lifecycle
 
-Full example:
-- https://github.com/ChustaSoft/SecureConfig/tree/master/ChustaSoft.Tools.SecureConfig.TestApi
+Full example for .NetCore 2.x:
+- https://github.com/ChustaSoft/SecureConfig/tree/master/ChustaSoft.Tools.SecureConfig.NetCore2.TestApi
+Full example for .NetCore 3.x:
+- https://github.com/ChustaSoft/SecureConfig/tree/master/ChustaSoft.Tools.SecureConfig.NetCore3.TestApi
 
 Configuration video tutorial:
 - https://twitter.com/ChustaSoft/status/1198636624340488192
