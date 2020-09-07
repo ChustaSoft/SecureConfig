@@ -25,17 +25,17 @@ namespace ChustaSoft.Tools.SecureConfig
 
 
         #if (NETCOREAPP3_0 || NETCOREAPP3_1)
-        public static CommonHosting.IHost EncryptSettings<TSettings>(this CommonHosting.IHost host, bool encrypt)
+        public static CommonHosting.IHost EncryptSettings<TSettings>(this CommonHosting.IHost host, bool encrypt, string settingsParamName = AppConstants.DEFAULT_SETTINGS_PARAM_NAME)
             where TSettings : class, new()
         {
             switch (encrypt)
             {
                 case true:
-                    PerformSettingsEncryption<TSettings>(host.Services);
+                    PerformSettingsEncryption<TSettings>(host.Services, settingsParamName);
                     break;
 
                 case false:
-                    PerformSettingsDecryption<TSettings>(host.Services);
+                    PerformSettingsDecryption<TSettings>(host.Services, settingsParamName);
                     break;
             }
 
@@ -43,17 +43,17 @@ namespace ChustaSoft.Tools.SecureConfig
         }
 
         #elif (NETCOREAPP2_1 || NETCOREAPP2_2)
-        public static AspNetHosting.IWebHost EncryptSettings<TSettings>(this AspNetHosting.IWebHost webHost, bool encrypt)
+        public static AspNetHosting.IWebHost EncryptSettings<TSettings>(this AspNetHosting.IWebHost webHost, bool encrypt, string settingsParamName = AppConstants.DEFAULT_SETTINGS_PARAM_NAME)
             where TSettings : class, new()
         {
             switch (encrypt)
             {
                 case true:
-                    PerformSettingsEncryption<TSettings>(webHost.Services);
+                    PerformSettingsEncryption<TSettings>(webHost.Services, settingsParamName);
                     break;
 
                 case false:
-                    PerformSettingsDecryption<TSettings>(webHost.Services);
+                    PerformSettingsDecryption<TSettings>(webHost.Services, settingsParamName);
                     break;
             }
 
@@ -67,43 +67,43 @@ namespace ChustaSoft.Tools.SecureConfig
 
         #region Private methods
 
-        private static void PerformSettingsDecryption<TSettings>(IServiceProvider services)
+        private static void PerformSettingsDecryption<TSettings>(IServiceProvider services, string settingsParamName)
             where TSettings : class, new()
         {
             using (var scope = services.CreateScope())
             {
                 foreach (var environmentFile in GetSettingFiles(scope))
                 {
-                    var writableOptions = GetWritebleSettings<TSettings>(scope, environmentFile);
+                    var writableOptions = GetWritebleSettings<TSettings>(scope, environmentFile, settingsParamName);
 
                     if (writableOptions.IsAlreadyEncrypted())
                     {
-                        var decryptedConfiguration = GetDecryptedConfiguration<TSettings>(scope);
+                        var decryptedConfiguration = GetDecryptedConfiguration<TSettings>(scope, settingsParamName);
                         writableOptions.Apply(decryptedConfiguration);
                     }
                 }
             }
         }
 
-        private static void PerformSettingsEncryption<TSettings>(IServiceProvider services)
+        private static void PerformSettingsEncryption<TSettings>(IServiceProvider services, string settingsParamName)
             where TSettings : class, new()
         {
             using (var scope = services.CreateScope())
             {
                 foreach (var environmentFile in GetSettingFiles(scope))
                 {
-                    var writableOptions = GetWritebleSettings<TSettings>(scope, environmentFile);
+                    var writableOptions = GetWritebleSettings<TSettings>(scope, environmentFile, settingsParamName);
 
                     if (!writableOptions.IsAlreadyEncrypted())
                     {
-                        var encryptedConfiguration = GetEncryptedConfiguration<TSettings>(scope);
+                        var encryptedConfiguration = GetEncryptedConfiguration<TSettings>(scope, settingsParamName);
                         writableOptions.Apply(encryptedConfiguration);
                     }
                 }
             }
         }
 
-        private static IWritableSettings<TSettings> GetWritebleSettings<TSettings>(IServiceScope scope, string fileName)
+        private static IWritableSettings<TSettings> GetWritebleSettings<TSettings>(IServiceScope scope, string fileName, string settingsParamName)
             where TSettings : class, new()
         {
 #if (NETCOREAPP3_0 || NETCOREAPP3_1)
@@ -113,27 +113,27 @@ namespace ChustaSoft.Tools.SecureConfig
 #else
 #endif      
             var optionsMonitor = scope.ServiceProvider.GetRequiredService<IOptionsMonitor<TSettings>>();
-            var writableOptions = new WritableSettings<TSettings>(hostingEnvironment, optionsMonitor, AppConstants.DEFAULT_SETTINGS_PARAM_NAME, fileName);
+            var writableOptions = new WritableSettings<TSettings>(hostingEnvironment, optionsMonitor, settingsParamName, fileName);
 
             return writableOptions;
         }
 
-        private static string GetEncryptedConfiguration<TSettings>(IServiceScope scope)
+        private static string GetEncryptedConfiguration<TSettings>(IServiceScope scope, string settingsParamName)
             where TSettings : class, new()
         {
             var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-            var settings = config.GetSettings<TSettings>();
+            var settings = config.GetSettings<TSettings>(settingsParamName);
             var encryptationKey = scope.ServiceProvider.GetRequiredService<EncryptionKey>().Key;
             var encryptedConfiguration = EncrypterManager.Encrypt(settings, encryptationKey);
 
             return encryptedConfiguration;
         }
 
-        private static TSettings GetDecryptedConfiguration<TSettings>(IServiceScope scope)
+        private static TSettings GetDecryptedConfiguration<TSettings>(IServiceScope scope, string settingsParamName)
             where TSettings : class, new()
         {
             var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-            var encryptedValue = config.GetEncryptedValue();
+            var encryptedValue = config.GetEncryptedValue(settingsParamName);
             var encryptationKey = scope.ServiceProvider.GetRequiredService<EncryptionKey>().Key;
             var settings = EncrypterManager.Decrypt<TSettings>(encryptedValue, encryptationKey);
 
