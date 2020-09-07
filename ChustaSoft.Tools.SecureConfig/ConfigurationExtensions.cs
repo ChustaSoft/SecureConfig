@@ -17,7 +17,7 @@ namespace ChustaSoft.Tools.SecureConfig
             return connections;
         }
 
-        public static TSettings GetSettings<TSettings>(this IConfiguration configuration, string settingsParamName = AppConstants.DEFAULT_SETTINGS_PARAM_NAME)
+        public static TSettings GetSettings<TSettings>(this IConfiguration configuration, string settingsParamName)
             where TSettings : new()
         {
             var settings = configuration.GetSection(settingsParamName).Get<TSettings>();
@@ -25,9 +25,9 @@ namespace ChustaSoft.Tools.SecureConfig
             return settings;
         }
 
-        public static string GetEncryptedValue(this IConfiguration configuration)
+        public static string GetEncryptedValue(this IConfiguration configuration, string settingsParamName)
         {
-            return configuration.GetSettings<EncryptedConfiguration>()?.EncryptedValue;
+            return configuration.GetSettings<EncryptedConfiguration>(settingsParamName)?.EncryptedValue;
         }
 
     }
