@@ -15,7 +15,6 @@ namespace ChustaSoft.Tools.SecureConfig
 
         #region Constants
 
-        private const string DEVELOPMENT_SETTINGS_FILE = "appsettings.Development.json";
         private const string SETTINGS_FILE_PATTERN = "appsettings*.json";
 
         #endregion
@@ -151,9 +150,6 @@ namespace ChustaSoft.Tools.SecureConfig
             var files = Directory.GetFiles(assemblyFolder, SETTINGS_FILE_PATTERN).ToList();
 
             files = files.Select(x => x.Substring(x.LastIndexOf('\\') + 1)).ToList();
-
-            if (!files.Contains(DEVELOPMENT_SETTINGS_FILE))
-                files.Add(DEVELOPMENT_SETTINGS_FILE);
 
             return files;
         }
