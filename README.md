@@ -1,6 +1,6 @@
 # SecureConfig
 ---
-[![Build Status](https://dev.azure.com/chustasoft/BaseProfiler/_apis/build/status/Release/RELEASE%20-%20NuGet%20-%20ChustaSoft%20SecureConfig?branchName=master)](https://dev.azure.com/chustasoft/BaseProfiler/_build/latest?definitionId=17&branchName=master) [![NuGet](https://img.shields.io/nuget/v/ChustaSoft.Tools.SecureConfig )](https://www.nuget.org/packages/ChustaSoft.Tools.SecureConfig ) [![Nuget](https://img.shields.io/nuget/dt/ChustaSoft.Tools.SecureConfig?style=plastic)]
+[![Build Status](https://dev.azure.com/chustasoft/BaseProfiler/_apis/build/status/Release/RELEASE%20-%20NuGet%20-%20ChustaSoft%20SecureConfig?branchName=master)](https://dev.azure.com/chustasoft/BaseProfiler/_build/latest?definitionId=17&branchName=master) [![NuGet](https://img.shields.io/nuget/v/ChustaSoft.Tools.SecureConfig )](https://www.nuget.org/packages/ChustaSoft.Tools.SecureConfig ) ![Nuget](https://img.shields.io/nuget/dt/ChustaSoft.Tools.SecureConfig?style=plastic)
 
 Tool to give security to the configurations of an ASPNET Core application by encrypting sensitive information and handling in a secure way
 
@@ -41,10 +41,10 @@ This tool allows to encrypt configuration sections on app.settings files, and de
 
 - [Full example for .NetCore 2.x](https://github.com/ChustaSoft/SecureConfig/tree/master/ChustaSoft.Tools.SecureConfig.NetCore2.TestApi)
 - [Full example for .NetCore 3.x](https://github.com/ChustaSoft/SecureConfig/tree/master/ChustaSoft.Tools.SecureConfig.NetCore3.TestApi)
-- [Configuration video tutorial](https://twitter.com/ChustaSoft/status/1198636624340488192) [![YouTube Video Views](https://img.shields.io/youtube/views/-7MBpqpr4ko?style=social)]
+- [Configuration video tutorial](https://twitter.com/ChustaSoft/status/1198636624340488192) ![YouTube Video Views](https://img.shields.io/youtube/views/-7MBpqpr4ko?style=social)
 
 
-For deep configurations, 
+For deep configurations, visit [this section](https://github.com/ChustaSoft/SecureConfig/wiki#deep-configuration) of our current wiki
 
 That's all!
 
