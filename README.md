@@ -41,7 +41,7 @@ This tool allows to encrypt configuration sections on app.settings files, and de
 
 - [Full example for .NetCore 2.x](https://github.com/ChustaSoft/SecureConfig/tree/master/ChustaSoft.Tools.SecureConfig.NetCore2.TestApi)
 - [Full example for .NetCore 3.x](https://github.com/ChustaSoft/SecureConfig/tree/master/ChustaSoft.Tools.SecureConfig.NetCore3.TestApi)
-- [Configuration video tutorial](https://twitter.com/ChustaSoft/status/1198636624340488192) ![YouTube Video Views](https://img.shields.io/youtube/views/-7MBpqpr4ko?style=social)
+- [Configuration video tutorial](https://twitter.com/ChustaSoft/status/1198636624340488192)
 
 
 For deep configurations, visit [this section](https://github.com/ChustaSoft/SecureConfig/wiki#deep-configuration) of our current wiki
@@ -53,4 +53,4 @@ Enjoy it and do not hesitate to contacts us for suggestions or doubts.
 *Thanks for using and contributing*
 ---
 [![Twitter Follow](https://img.shields.io/twitter/follow/ChustaSoft?label=Follow%20us&style=social)](https://twitter.com/ChustaSoft)
-
+![YouTube Video Views](https://img.shields.io/youtube/views/-7MBpqpr4ko?style=social)
