@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using AspNetHosting = Microsoft.AspNetCore.Hosting;
 using CommonHosting = Microsoft.Extensions.Hosting;
 
@@ -146,12 +147,20 @@ namespace ChustaSoft.Tools.SecureConfig
 #elif (NETCOREAPP2_1 || NETCOREAPP2_2)
             var assemblyFolder = scope.ServiceProvider.GetRequiredService<AspNetHosting.IHostingEnvironment>().ContentRootPath;
 #else
-#endif
-            var files = Directory.GetFiles(assemblyFolder, SETTINGS_FILE_PATTERN).ToList();
-
-            files = files.Select(x => x.Substring(x.LastIndexOf('\\') + 1)).ToList();
+#endif         
+            var files = Directory.GetFiles(assemblyFolder, SETTINGS_FILE_PATTERN)
+                .Select(x => x.Substring(x.LastIndexOf(GetProperSeparator()) + 1))
+                .ToList();
 
             return files;
+        }
+
+        private static char GetProperSeparator()
+        {
+            if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                return '\\';
+            else
+                return '/';
         }
 
         #endregion
