@@ -1,6 +1,6 @@
 # SecureConfig
 ---
-[![Build Status](https://dev.azure.com/chustasoft/BaseProfiler/_apis/build/status/Release/RELEASE%20-%20NuGet%20-%20ChustaSoft%20SecureConfig?branchName=master)](https://dev.azure.com/chustasoft/BaseProfiler/_build/latest?definitionId=17&branchName=master) [![NuGet](https://img.shields.io/nuget/v/ChustaSoft.Tools.SecureConfig )](https://www.nuget.org/packages/ChustaSoft.Tools.SecureConfig) ![Nuget](https://img.shields.io/nuget/dt/ChustaSoft.Tools.SecureConfig)
+[![Build Status](https://dev.azure.com/chustasoft/SocialNET/_apis/build/status/OpenStack/SecureConfig/%5BRELEASE%5D%20-%20ChustaSoft%20SecureConfig%20(NuGet)?branchName=master)](https://dev.azure.com/chustasoft/SocialNET/_build/latest?definitionId=17&branchName=master) [![NuGet](https://img.shields.io/nuget/v/ChustaSoft.Tools.SecureConfig )](https://www.nuget.org/packages/ChustaSoft.Tools.SecureConfig) ![Nuget](https://img.shields.io/nuget/dt/ChustaSoft.Tools.SecureConfig)
 
 Tool to give security to the configurations of an ASPNET Core application by encrypting sensitive information and handling in a secure way
 
