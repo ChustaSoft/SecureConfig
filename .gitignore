@@ -13,3 +13,6 @@
 /ChustaSoft.Tools.SecureConfig.NetCore3.TestApi/bin/Debug/netcoreapp3.0
 /ChustaSoft.Tools.SecureConfig.NetCore3.TestApi/obj
 /ChustaSoft.Tools.SecureConfig.NetCore3.TestApi/bin/Debug/netcoreapp3.1
+/ChustaSoft.Tools.SecureConfig.Net5.TestApi/Properties
+/ChustaSoft.Tools.SecureConfig.Net5.TestApi/obj
+/ChustaSoft.Tools.SecureConfig.Net5.TestApi/bin/Debug/net5.0
