@@ -12,9 +12,9 @@ namespace ChustaSoft.Tools.SecureConfig
 
         #region Fields & Properties
 
-#if (NETCOREAPP3_0 || NETCOREAPP3_1)
+#if (NETCOREAPP3_1 || NET5_0)
         private readonly IWebHostEnvironment _environment;
-#elif (NETCOREAPP2_1 || NETCOREAPP2_2)
+#elif (NETCOREAPP2_1)
         private readonly IHostingEnvironment _environment;
 #else
 #endif
@@ -31,7 +31,7 @@ namespace ChustaSoft.Tools.SecureConfig
 
         #region Constructor
 
-#if (NETCOREAPP3_0 || NETCOREAPP3_1)
+#if (NETCOREAPP3_1 || NET5_0)
         public WritableSettings(IWebHostEnvironment environment, IOptionsMonitor<TSettings> options, string section, string file)
         {
             _environment = environment;
@@ -39,7 +39,9 @@ namespace ChustaSoft.Tools.SecureConfig
             _section = section;
             _file = file;
         }
-#elif (NETCOREAPP2_1 || NETCOREAPP2_2)
+#endif
+
+#if (NETCOREAPP2_1)
         public WritableSettings(IHostingEnvironment environment, IOptionsMonitor<TSettings> options, string section, string file)
         {
             _environment = environment;
@@ -47,7 +49,6 @@ namespace ChustaSoft.Tools.SecureConfig
             _section = section;
             _file = file;
         }
-#else
 #endif
 
         #endregion
