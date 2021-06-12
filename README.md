@@ -1,14 +1,16 @@
 # SecureConfig
 ---
-[![Build Status](https://dev.azure.com/chustasoft/SocialNET/_apis/build/status/OpenStack/SecureConfig/%5BRELEASE%5D%20-%20ChustaSoft%20SecureConfig%20(NuGet)?branchName=master)](https://dev.azure.com/chustasoft/SocialNET/_build/latest?definitionId=17&branchName=master) [![NuGet](https://img.shields.io/nuget/v/ChustaSoft.Tools.SecureConfig )](https://www.nuget.org/packages/ChustaSoft.Tools.SecureConfig) ![Nuget](https://img.shields.io/nuget/dt/ChustaSoft.Tools.SecureConfig)
+[![Build Status](https://dev.azure.com/chustasoft/SocialNET/_apis/build/status/OpenStack/SecureConfig/%5BRELEASE%5D%20-%20ChustaSoft%20SecureConfig%20(NuGet)?branchName=master)](https://dev.azure.com/chustasoft/SocialNET/_build/latest?definitionId=17&branchName=master) [![NuGet](https://img.shields.io/nuget/v/ChustaSoft.Tools.SecureConfig )](https://www.nuget.org/packages/ChustaSoft.Tools.SecureConfig) ![Nuget](https://img.shields.io/nuget/dt/ChustaSoft.Tools.SecureConfig) ![GitHub](https://img.shields.io/github/license/ChustaSoft/SecureConfig)
 
 Tool to give security to the configurations of an ASPNET Core application by encrypting sensitive information and handling in a secure way
 
 Prerequisites:
-- NetCore 2.x
+- NetCore 2.1
   - Support from version 1.0.0
-- NetCore 3.x
+- NetCore 3.1
   - Support from version 1.2.0
+- Net 5.0
+  - Support from version 1.3.0
 
 
 · Description:
@@ -39,8 +41,9 @@ This tool allows to encrypt configuration sections on app.settings files, and de
 	
 7. Inject the settings class object in the class that the project will need, SecureConfig manage this class as a Singleton in the application lifecycle
 
-- [Full example for .NetCore 2.x](https://github.com/ChustaSoft/SecureConfig/tree/master/ChustaSoft.Tools.SecureConfig.NetCore2.TestApi)
-- [Full example for .NetCore 3.x](https://github.com/ChustaSoft/SecureConfig/tree/master/ChustaSoft.Tools.SecureConfig.NetCore3.TestApi)
+- [Full example for .NetCore 2.1](https://github.com/ChustaSoft/SecureConfig/tree/master/ChustaSoft.Tools.SecureConfig.NetCore2.TestApi)
+- [Full example for .NetCore 3.1](https://github.com/ChustaSoft/SecureConfig/tree/master/ChustaSoft.Tools.SecureConfig.NetCore3.TestApi)
+- [Full example for .NET 5.0](https://github.com/ChustaSoft/SecureConfig/tree/master/ChustaSoft.Tools.SecureConfig.Net5.TestApi)
 - [Configuration video tutorial](https://twitter.com/ChustaSoft/status/1198636624340488192)
 
 
