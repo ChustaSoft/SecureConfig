@@ -22,7 +22,7 @@ namespace ChustaSoft.Tools.SecureConfig.TestApi
         public void ConfigureServices(IServiceCollection services)
         {
             var testApikey = "5357F6B0313A478A9BF901BB37B4A458";
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.SetUpSecureConfig<AppSettings>(_configuration, testApikey);
         }
