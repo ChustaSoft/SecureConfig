@@ -24,7 +24,7 @@ namespace ChustaSoft.Tools.SecureConfig
         #region Public methods
 
 
-#if (NETCOREAPP3_1 || NET5_0)
+#if (NETCOREAPP3_1 || NET5_0 || NET6_0)
         public static CommonHosting.IHost EncryptSettings<TSettings>(this CommonHosting.IHost host, bool encrypt, string settingsParamName = AppConstants.DEFAULT_SETTINGS_PARAM_NAME)
             where TSettings : class, new()
         {
@@ -106,7 +106,7 @@ namespace ChustaSoft.Tools.SecureConfig
         private static IWritableSettings<TSettings> GetWritebleSettings<TSettings>(IServiceScope scope, string fileName, string settingsParamName)
             where TSettings : class, new()
         {
-#if (NETCOREAPP3_1 || NET5_0)
+#if (NETCOREAPP3_1 || NET5_0 || NET6_0)
             var hostingEnvironment = scope.ServiceProvider.GetRequiredService<AspNetHosting.IWebHostEnvironment>();
 #elif (NETCOREAPP2_1)
             var hostingEnvironment = scope.ServiceProvider.GetRequiredService<AspNetHosting.IHostingEnvironment>();
@@ -142,7 +142,7 @@ namespace ChustaSoft.Tools.SecureConfig
 
         private static IEnumerable<string> GetSettingFiles(IServiceScope scope)
         {
-#if (NETCOREAPP3_1 || NET5_0)
+#if (NETCOREAPP3_1 || NET5_0 || NET6_0)
             var assemblyFolder = scope.ServiceProvider.GetRequiredService<AspNetHosting.IWebHostEnvironment>().ContentRootPath;
 #elif (NETCOREAPP2_1)
             var assemblyFolder = scope.ServiceProvider.GetRequiredService<AspNetHosting.IHostingEnvironment>().ContentRootPath;

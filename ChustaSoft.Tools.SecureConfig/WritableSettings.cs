@@ -12,7 +12,7 @@ namespace ChustaSoft.Tools.SecureConfig
 
         #region Fields & Properties
 
-#if (NETCOREAPP3_1 || NET5_0)
+#if (NETCOREAPP3_1 || NET5_0 || NET6_0)
         private readonly IWebHostEnvironment _environment;
 #elif (NETCOREAPP2_1)
         private readonly IHostingEnvironment _environment;
@@ -31,7 +31,7 @@ namespace ChustaSoft.Tools.SecureConfig
 
         #region Constructor
 
-#if (NETCOREAPP3_1 || NET5_0)
+#if (NETCOREAPP3_1 || NET5_0 || NET6_0)
         public WritableSettings(IWebHostEnvironment environment, IOptionsMonitor<TSettings> options, string section, string file)
         {
             _environment = environment;
