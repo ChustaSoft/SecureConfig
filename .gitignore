@@ -16,3 +16,4 @@
 /ChustaSoft.Tools.SecureConfig.Net5.TestApi/Properties
 /ChustaSoft.Tools.SecureConfig.Net5.TestApi/obj
 /ChustaSoft.Tools.SecureConfig.Net5.TestApi/bin/Debug/net5.0
+*.user

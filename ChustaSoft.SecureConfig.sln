@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30204.135
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.SecureConfig.UnitTests", "ChustaSoft.Tools.SecureConfig.UnitTests\ChustaSoft.Tools.SecureConfig.UnitTests.csproj", "{67730525-D62D-4365-A10A-3EB43B6FC13B}"
 EndProject
@@ -11,13 +11,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.SecureConf
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. NuGet", "1. NuGet", "{D0E003FD-6AB0-4D1E-AD40-CA2506E6DE81}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Tests", "2. Tests", "{D033D8B5-0D41-42D7-9937-A269F567B29D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Testing", "2. Testing", "{D033D8B5-0D41-42D7-9937-A269F567B29D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Examples", "3. Examples", "{F4D6CFF4-7A02-4CB4-A79E-DBAFFCEFBB20}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.SecureConfig.NetCore3.TestApi", "ChustaSoft.Tools.SecureConfig.NetCore3.TestApi\ChustaSoft.Tools.SecureConfig.NetCore3.TestApi.csproj", "{CB789173-FC45-4F8D-A6C8-2E5581FEC606}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChustaSoft.Tools.SecureConfig.Net5.TestApi", "ChustaSoft.Tools.SecureConfig.Net5.TestApi\ChustaSoft.Tools.SecureConfig.Net5.TestApi.csproj", "{744FADDD-7456-43E1-B6DD-45E47CE8617A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.SecureConfig.Net5.TestApi", "ChustaSoft.Tools.SecureConfig.Net5.TestApi\ChustaSoft.Tools.SecureConfig.Net5.TestApi.csproj", "{744FADDD-7456-43E1-B6DD-45E47CE8617A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Documentation", "4. Documentation", "{7AD94751-A4EE-4646-B954-810E600DBC89}"
+	ProjectSection(SolutionItems) = preProject
+		changelog.md = changelog.md
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
