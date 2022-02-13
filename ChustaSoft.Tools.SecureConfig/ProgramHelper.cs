@@ -28,7 +28,7 @@ namespace ChustaSoft.Tools.SecureConfig
 
 #elif (NETCOREAPP3_1 || NET5_0)
 
-        public static CommonHosting.IHost EncryptSettings<TSettings>(this CommonHosting.IHost host, bool encrypt, string settingsParamName = AppConstants.DEFAULT_SETTINGS_PARAM_NAME)
+        public static CommonHosting.IHost EncryptSettings<TSettings>(this CommonHosting.IHost host, bool encrypt = true, string settingsParamName = AppConstants.DEFAULT_SETTINGS_PARAM_NAME)
             where TSettings : class, new()
         {
             switch (encrypt)
@@ -47,7 +47,7 @@ namespace ChustaSoft.Tools.SecureConfig
 
 #elif (NETCOREAPP2_1)
 
-        public static AspNetHosting.IWebHost EncryptSettings<TSettings>(this AspNetHosting.IWebHost webHost, bool encrypt, string settingsParamName = AppConstants.DEFAULT_SETTINGS_PARAM_NAME)
+        public static AspNetHosting.IWebHost EncryptSettings<TSettings>(this AspNetHosting.IWebHost webHost, bool encrypt = true, string settingsParamName = AppConstants.DEFAULT_SETTINGS_PARAM_NAME)
             where TSettings : class, new()
         {
             switch (encrypt)
