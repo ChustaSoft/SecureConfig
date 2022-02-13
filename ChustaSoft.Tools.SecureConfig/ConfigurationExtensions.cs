@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace ChustaSoft.Tools.SecureConfig
 {
-    public static class ConfigurationExtensions
+    internal static class ConfigurationExtensions
     {
 
-        public static IDictionary<string, string> GetConnectionStrings(this IConfiguration configuration, string connectionsParamName = AppConstants.DEFAULT_CONNECTIONS_PARAM_NAME)
+        internal static IDictionary<string, string> GetConnectionStrings(this IConfiguration configuration, string connectionsParamName = AppConstants.DEFAULT_CONNECTIONS_PARAM_NAME)
         {
             var connections = new Dictionary<string, string>();
             var connectionStrings = configuration.GetSection(connectionsParamName).GetChildren();
@@ -17,7 +17,18 @@ namespace ChustaSoft.Tools.SecureConfig
             return connections;
         }
 
-        public static TSettings GetSettings<TSettings>(this IConfiguration configuration, string settingsParamName)
+        internal static TSettings GetSettings<TSettings>(this IConfiguration configuration, string privateKeyParam, string settingsParamName)
+            where TSettings : new()
+        {
+            var encryptedValue = configuration.GetEncryptedValue(settingsParamName);
+
+            if (string.IsNullOrEmpty(encryptedValue))
+                return configuration.GetSettings<TSettings>(settingsParamName);
+            else
+                return EncrypterManager.Decrypt<TSettings>(encryptedValue, privateKeyParam);
+        }
+
+        internal static TSettings GetSettings<TSettings>(this IConfiguration configuration, string settingsParamName)
             where TSettings : new()
         {
             var settings = configuration.GetSection(settingsParamName).Get<TSettings>();
@@ -25,7 +36,7 @@ namespace ChustaSoft.Tools.SecureConfig
             return settings;
         }
 
-        public static string GetEncryptedValue(this IConfiguration configuration, string settingsParamName)
+        internal static string GetEncryptedValue(this IConfiguration configuration, string settingsParamName)
         {
             return configuration.GetSettings<EncryptedConfiguration>(settingsParamName)?.EncryptedValue;
         }

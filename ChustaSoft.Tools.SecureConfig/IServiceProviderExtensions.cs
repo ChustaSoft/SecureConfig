@@ -7,67 +7,16 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using AspNetHosting = Microsoft.AspNetCore.Hosting;
-using CommonHosting = Microsoft.Extensions.Hosting;
 
 namespace ChustaSoft.Tools.SecureConfig
 {
-    public static class WebHostExtensions
+    internal static class IServiceProviderExtensions
     {
-
-        #region Constants
-
+        
         private const string SETTINGS_FILE_PATTERN = "appsettings*.json";
 
-        #endregion
 
-
-        #region Public methods
-
-
-#if (NETCOREAPP3_1 || NET5_0 || NET6_0)
-        public static CommonHosting.IHost EncryptSettings<TSettings>(this CommonHosting.IHost host, bool encrypt, string settingsParamName = AppConstants.DEFAULT_SETTINGS_PARAM_NAME)
-            where TSettings : class, new()
-        {
-            switch (encrypt)
-            {
-                case true:
-                    PerformSettingsEncryption<TSettings>(host.Services, settingsParamName);
-                    break;
-
-                case false:
-                    PerformSettingsDecryption<TSettings>(host.Services, settingsParamName);
-                    break;
-            }
-
-            return host;
-        }
-
-#elif (NETCOREAPP2_1)
-        public static AspNetHosting.IWebHost EncryptSettings<TSettings>(this AspNetHosting.IWebHost webHost, bool encrypt, string settingsParamName = AppConstants.DEFAULT_SETTINGS_PARAM_NAME)
-            where TSettings : class, new()
-        {
-            switch (encrypt)
-            {
-                case true:
-                    PerformSettingsEncryption<TSettings>(webHost.Services, settingsParamName);
-                    break;
-
-                case false:
-                    PerformSettingsDecryption<TSettings>(webHost.Services, settingsParamName);
-                    break;
-            }
-
-            return webHost;
-        }
-        #else
-        #endif
-
-        #endregion
-
-
-        #region Private methods
-
-        private static void PerformSettingsDecryption<TSettings>(IServiceProvider services, string settingsParamName)
+        internal static void PerformSettingsDecryption<TSettings>(this IServiceProvider services, string settingsParamName)
             where TSettings : class, new()
         {
             using (var scope = services.CreateScope())
@@ -85,7 +34,7 @@ namespace ChustaSoft.Tools.SecureConfig
             }
         }
 
-        private static void PerformSettingsEncryption<TSettings>(IServiceProvider services, string settingsParamName)
+        internal static void PerformSettingsEncryption<TSettings>(this IServiceProvider services, string settingsParamName)
             where TSettings : class, new()
         {
             using (var scope = services.CreateScope())
@@ -111,7 +60,7 @@ namespace ChustaSoft.Tools.SecureConfig
 #elif (NETCOREAPP2_1)
             var hostingEnvironment = scope.ServiceProvider.GetRequiredService<AspNetHosting.IHostingEnvironment>();
 #else
-#endif      
+#endif
             var optionsMonitor = scope.ServiceProvider.GetRequiredService<IOptionsMonitor<TSettings>>();
             var writableOptions = new WritableSettings<TSettings>(hostingEnvironment, optionsMonitor, settingsParamName, fileName);
 
@@ -147,7 +96,7 @@ namespace ChustaSoft.Tools.SecureConfig
 #elif (NETCOREAPP2_1)
             var assemblyFolder = scope.ServiceProvider.GetRequiredService<AspNetHosting.IHostingEnvironment>().ContentRootPath;
 #else
-#endif         
+#endif
             var files = Directory.GetFiles(assemblyFolder, SETTINGS_FILE_PATTERN)
                 .Select(x => x.Substring(x.LastIndexOf(GetProperSeparator()) + 1))
                 .ToList();
@@ -157,13 +106,11 @@ namespace ChustaSoft.Tools.SecureConfig
 
         private static char GetProperSeparator()
         {
-            if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 return '\\';
             else
                 return '/';
         }
-
-        #endregion
 
     }
 }
