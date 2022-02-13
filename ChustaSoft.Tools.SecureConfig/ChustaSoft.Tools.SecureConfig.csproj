@@ -1,47 +1,53 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.1;netcoreapp3.1;net5.0</TargetFrameworks>
-    <PackageId>ChustaSoft.Tools.SecureConfig</PackageId>
-    <RootNamespace>ChustaSoft.Tools.SecureConfig</RootNamespace>
-    <Description>This tool allows to encrypt configuration sections on app.settings files, and decrypt the information in runtime adding those configuration as a singleton inside the application.</Description>
-    <Copyright>ChustaSoft</Copyright>
-    <Authors>Xelit3</Authors>
-    <Company>ChustaSoft</Company>
-    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
-    <PackageId>ChustaSoft.Tools.SecureConfig</PackageId>
-    <Version>1.3.0</Version>
-    <AssemblyVersion>1.3.0</AssemblyVersion>
-    <FileVersion>1.3.0</FileVersion>
-    <PackageProjectUrl>https://github.com/ChustaSoft/SecureConfig</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/ChustaSoft/SecureConfig/blob/master/LICENSE</PackageLicenseUrl>
-    <RepositoryUrl>https://github.com/ChustaSoft/SecureConfig.git</RepositoryUrl>
-    <RepositoryType>GIT</RepositoryType>
-    <PackageTags>Utilities;Helpers;Core;Configuration;Encryptation;appsettings</PackageTags>
-    <PackageReleaseNotes>Documentation could be found here: https://github.com/ChustaSoft/SecureConfig/wiki</PackageReleaseNotes>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>netcoreapp2.1;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+		<PackageId>ChustaSoft.Tools.SecureConfig</PackageId>
+		<RootNamespace>ChustaSoft.Tools.SecureConfig</RootNamespace>
+		<Description>This tool allows to encrypt configuration sections on app.settings files, and decrypt the information in runtime adding those configuration as a singleton inside the application.</Description>
+		<Copyright>ChustaSoft</Copyright>
+		<Authors>Xelit3</Authors>
+		<Company>ChustaSoft</Company>
+		<RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+		<PackageId>ChustaSoft.Tools.SecureConfig</PackageId>
+		<Version>1.4.0</Version>
+		<AssemblyVersion>1.4.0</AssemblyVersion>
+		<FileVersion>1.4.0</FileVersion>
+		<PackageProjectUrl>https://github.com/ChustaSoft/SecureConfig</PackageProjectUrl>
+		<PackageLicenseUrl>https://github.com/ChustaSoft/SecureConfig/blob/master/LICENSE</PackageLicenseUrl>
+		<RepositoryUrl>https://github.com/ChustaSoft/SecureConfig.git</RepositoryUrl>
+		<RepositoryType>GIT</RepositoryType>
+		<PackageTags>Utilities;Helpers;Core;Configuration;Encryptation;appsettings</PackageTags>
+		<PackageReleaseNotes>Documentation could be found here: https://github.com/ChustaSoft/SecureConfig/wiki</PackageReleaseNotes>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="ChustaSoft.Common" Version="2.0.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="ChustaSoft.Common" Version="2.5.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	</ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.1.1" />
-  </ItemGroup>
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
+		<PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.1.1" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.1.1" />
+	</ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.5" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.5" />
-  </ItemGroup>
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.22" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.22" />
+	</ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0" />
-  </ItemGroup>
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
+	</ItemGroup>
 
 </Project>

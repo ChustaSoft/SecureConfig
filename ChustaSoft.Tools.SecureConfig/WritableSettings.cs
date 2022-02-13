@@ -6,13 +6,31 @@ using System.IO;
 
 namespace ChustaSoft.Tools.SecureConfig
 {
+
+    #region Contract
+
+    public interface IWritableSettings<TSettings> : IOptionsSnapshot<TSettings>
+        where TSettings : class, new()
+    {
+
+        bool IsAlreadyEncrypted();
+
+        void Apply(string encryptedValue);
+
+        void Apply(TSettings decryptedObj);
+
+    }
+
+    #endregion
+
+
+    #region Implementation
+
     public class WritableSettings<TSettings> : IWritableSettings<TSettings>
         where TSettings : class, new()
     {
 
-        #region Fields & Properties
-
-#if (NETCOREAPP3_1 || NET5_0)
+#if (NETCOREAPP3_1 || NET5_0 || NET6_0)
         private readonly IWebHostEnvironment _environment;
 #elif (NETCOREAPP2_1)
         private readonly IHostingEnvironment _environment;
@@ -26,12 +44,8 @@ namespace ChustaSoft.Tools.SecureConfig
         public TSettings Value => _options.CurrentValue;
         public TSettings Get(string name) => _options.Get(name);
 
-        #endregion
 
-
-        #region Constructor
-
-#if (NETCOREAPP3_1 || NET5_0)
+#if (NETCOREAPP3_1 || NET5_0 || NET6_0)
         public WritableSettings(IWebHostEnvironment environment, IOptionsMonitor<TSettings> options, string section, string file)
         {
             _environment = environment;
@@ -51,10 +65,6 @@ namespace ChustaSoft.Tools.SecureConfig
         }
 #endif
 
-        #endregion
-
-
-        #region Public methods
 
         public bool IsAlreadyEncrypted()
         {
@@ -87,10 +97,6 @@ namespace ChustaSoft.Tools.SecureConfig
             File.WriteAllText(physicalPath, JsonConvert.SerializeObject(jObject, Formatting.Indented));
         }
 
-        #endregion
-
-
-        #region Private methods
 
         private JObject GetJsonSettingsObject(string physicalPath)
         {
@@ -111,7 +117,8 @@ namespace ChustaSoft.Tools.SecureConfig
             return jObject[_section]?[nameof(EncryptedConfiguration.EncryptedValue)]?.Value<string>();
         }
 
-        #endregion
-
     }
+
+    #endregion
+
 }

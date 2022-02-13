@@ -3,10 +3,10 @@ using Newtonsoft.Json;
 
 namespace ChustaSoft.Tools.SecureConfig
 {
-    public static class EncrypterManager
+    internal static class EncrypterManager
     {
 
-        public static string Encrypt<TSettings>(TSettings appSettings, string privateKey)
+        internal static string Encrypt<TSettings>(TSettings appSettings, string privateKey)
             where TSettings : new()
         {
             var serializedSettings = JsonConvert.SerializeObject(appSettings);
@@ -15,7 +15,7 @@ namespace ChustaSoft.Tools.SecureConfig
             return configEncrypted;
         }
 
-        public static TSettings Decrypt<TSettings>(string encryptedResult, string privateKey)
+        internal static TSettings Decrypt<TSettings>(string encryptedResult, string privateKey)
             where TSettings : new()
         {
             var decryptedJson = EncryptationHelper.Decrypt(encryptedResult, privateKey);
