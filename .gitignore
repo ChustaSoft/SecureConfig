@@ -3,17 +3,6 @@
 ################################################################################
 
 /.vs
-/ChustaSoft.Tools.SecureConfig.UnitTests/obj
-/ChustaSoft.Tools.SecureConfig.UnitTests/bin
-/ChustaSoft.Tools.SecureConfig/obj
-/ChustaSoft.Tools.SecureConfig/bin
-/ChustaSoft.Tools.SecureConfig.NetCore2.TestApi/Properties/launchSettings.json
-/ChustaSoft.Tools.SecureConfig.NetCore2.TestApi/obj
-/ChustaSoft.Tools.SecureConfig.NetCore2.TestApi/bin
-/ChustaSoft.Tools.SecureConfig.NetCore3.TestApi/bin/Debug/netcoreapp3.0
-/ChustaSoft.Tools.SecureConfig.NetCore3.TestApi/obj
-/ChustaSoft.Tools.SecureConfig.NetCore3.TestApi/bin/Debug/netcoreapp3.1
-/ChustaSoft.Tools.SecureConfig.Net5.TestApi/Properties
-/ChustaSoft.Tools.SecureConfig.Net5.TestApi/obj
-/ChustaSoft.Tools.SecureConfig.Net5.TestApi/bin/Debug/net5.0
 *.user
+**/bin
+**/obj
