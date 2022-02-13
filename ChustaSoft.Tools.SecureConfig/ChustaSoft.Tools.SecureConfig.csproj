@@ -10,15 +10,15 @@
 		<Company>ChustaSoft</Company>
 		<RestoreProjectStyle>PackageReference</RestoreProjectStyle>
 		<PackageId>ChustaSoft.Tools.SecureConfig</PackageId>
-		<Version>1.4.0</Version>
-		<AssemblyVersion>1.4.0</AssemblyVersion>
-		<FileVersion>1.4.0</FileVersion>
-		<PackageProjectUrl>https://github.com/ChustaSoft/SecureConfig</PackageProjectUrl>
-		<PackageLicenseUrl>https://github.com/ChustaSoft/SecureConfig/blob/master/LICENSE</PackageLicenseUrl>
+		<Version>1.4.1</Version>
+		<AssemblyVersion>1.4.1</AssemblyVersion>
+		<FileVersion>1.4.1</FileVersion>
 		<RepositoryUrl>https://github.com/ChustaSoft/SecureConfig.git</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/ChustaSoft/SecureConfig</PackageProjectUrl>
+		<PackageLicenseUrl>https://github.com/ChustaSoft/SecureConfig/blob/main/LICENSE</PackageLicenseUrl>
+		<PackageReleaseNotes>https://github.com/ChustaSoft/SecureConfig/blob/main/changelog.md</PackageReleaseNotes>		
 		<RepositoryType>GIT</RepositoryType>
-		<PackageTags>Utilities;Helpers;Core;Configuration;Encryptation;appsettings</PackageTags>
-		<PackageReleaseNotes>Documentation could be found here: https://github.com/ChustaSoft/SecureConfig/wiki</PackageReleaseNotes>
+		<PackageTags>Utilities;Helpers;Core;Configuration;Encryptation;appsettings</PackageTags>		
 	</PropertyGroup>
 
 	<ItemGroup>
