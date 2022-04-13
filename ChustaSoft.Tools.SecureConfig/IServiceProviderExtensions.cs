@@ -24,7 +24,7 @@ namespace ChustaSoft.Tools.SecureConfig
                 {
                     var writableOptions = GetWritebleSettings<TSettings>(scope, environmentFile, settingsParamName);
 
-                    if (writableOptions.IsAlreadyEncrypted)
+                    if (writableOptions.IsEncrypted)
                     {
                         var decryptedConfiguration = GetDecryptedConfiguration<TSettings>(scope, writableOptions);
                         writableOptions.Apply(decryptedConfiguration);
@@ -42,7 +42,7 @@ namespace ChustaSoft.Tools.SecureConfig
                 {
                     var writableOptions = GetWritebleSettings<TSettings>(scope, environmentFile, settingsParamName);
 
-                    if (!writableOptions.IsAlreadyEncrypted)
+                    if (!writableOptions.IsEncrypted)
                     {
                         var encryptedConfiguration = GetEncryptedConfiguration(scope, writableOptions);
                         writableOptions.Apply(encryptedConfiguration);

@@ -14,7 +14,7 @@ namespace ChustaSoft.Tools.SecureConfig
     {
         TSettings DecryptedSettings { get; }
         EncryptedConfiguration EncryptedSettings { get; }
-        bool IsAlreadyEncrypted { get; }
+        bool IsEncrypted { get; }
 
         void Apply(string encryptedValue);
         void Apply(TSettings decryptedObj);
@@ -91,7 +91,7 @@ namespace ChustaSoft.Tools.SecureConfig
             }
         }
 
-        public bool IsAlreadyEncrypted 
+        public bool IsEncrypted 
         { 
             get 
             {
