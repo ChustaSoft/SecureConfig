@@ -10,9 +10,9 @@
 		<Company>ChustaSoft</Company>
 		<RestoreProjectStyle>PackageReference</RestoreProjectStyle>
 		<PackageId>ChustaSoft.Tools.SecureConfig</PackageId>
-		<Version>1.4.1</Version>
-		<AssemblyVersion>1.4.1</AssemblyVersion>
-		<FileVersion>1.4.1</FileVersion>
+		<Version>1.4.2</Version>
+		<AssemblyVersion>1.4.2</AssemblyVersion>
+		<FileVersion>1.4.2</FileVersion>
 		<RepositoryUrl>https://github.com/ChustaSoft/SecureConfig.git</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/ChustaSoft/SecureConfig</PackageProjectUrl>
 		<PackageLicenseUrl>https://github.com/ChustaSoft/SecureConfig/blob/main/LICENSE</PackageLicenseUrl>
@@ -22,7 +22,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="ChustaSoft.Common" Version="2.5.0" />
+		<PackageReference Include="ChustaSoft.Common" Version="2.7.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 	</ItemGroup>
 
@@ -34,8 +34,8 @@
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.22" />
-		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.22" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.24" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.24" />
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">

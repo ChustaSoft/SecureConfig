@@ -24,6 +24,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-app.EncryptSettings<AppSettings>();
+app.EncryptSettings<AppSettings>(false);
 
 app.Run();
