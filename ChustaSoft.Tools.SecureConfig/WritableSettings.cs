@@ -12,11 +12,11 @@ namespace ChustaSoft.Tools.SecureConfig
     public interface IWritableSettings<TSettings> : IOptionsSnapshot<TSettings>
         where TSettings : class, new()
     {
-
-        bool IsAlreadyEncrypted();
+        TSettings DecryptedSettings { get; }
+        EncryptedConfiguration EncryptedSettings { get; }
+        bool IsAlreadyEncrypted { get; }
 
         void Apply(string encryptedValue);
-
         void Apply(TSettings decryptedObj);
 
     }
@@ -36,6 +36,7 @@ namespace ChustaSoft.Tools.SecureConfig
         private readonly IHostingEnvironment _environment;
 #else
 #endif
+        private readonly SettingsConverter _converter;
         private readonly IOptionsMonitor<TSettings> _options;
         private readonly string _section;
         private readonly string _file;
@@ -47,33 +48,61 @@ namespace ChustaSoft.Tools.SecureConfig
 
 #if (NETCOREAPP3_1 || NET5_0 || NET6_0)
         public WritableSettings(IWebHostEnvironment environment, IOptionsMonitor<TSettings> options, string section, string file)
+            : this(options, section, file)
         {
             _environment = environment;
-            _options = options;
-            _section = section;
-            _file = file;
         }
 #endif
 
 #if (NETCOREAPP2_1)
         public WritableSettings(IHostingEnvironment environment, IOptionsMonitor<TSettings> options, string section, string file)
+            : this(options, section, file)
         {
             _environment = environment;
-            _options = options;
-            _section = section;
-            _file = file;
         }
 #endif
 
-
-        public bool IsAlreadyEncrypted()
+        public WritableSettings(IOptionsMonitor<TSettings> options, string section, string file)
         {
-            var physicalPath = GetPhysicalPath();
-            var jObject = GetJsonSettingsObject(physicalPath);
-            var encryptedValue = GetEncryptedValue(jObject);
-
-            return !string.IsNullOrWhiteSpace(encryptedValue);
+            _options = options;
+            _section = section;
+            _file = file;
+            _converter = new SettingsConverter();
         }
+
+
+        public TSettings DecryptedSettings
+        {
+            get
+            {
+                var filePath = GetPhysicalPath();
+
+                return _converter.Get<TSettings>(filePath, _section);
+            }
+        }
+
+        public EncryptedConfiguration EncryptedSettings
+        {
+            get
+            {
+                var filePath = GetPhysicalPath();
+
+                return _converter.Get<EncryptedConfiguration>(filePath, _section);
+            }
+        }
+
+        public bool IsAlreadyEncrypted 
+        { 
+            get 
+            {
+                var physicalPath = GetPhysicalPath();
+                var jObject = GetJsonSettingsObject(physicalPath);
+                var encryptedValue = GetEncryptedValue(jObject);
+
+                return !string.IsNullOrWhiteSpace(encryptedValue);
+            } 
+        }
+        
 
         public void Apply(string encryptedValue)
         {
@@ -90,8 +119,7 @@ namespace ChustaSoft.Tools.SecureConfig
         {
             var physicalPath = GetPhysicalPath();
             var jObject = GetJsonSettingsObject(physicalPath);
-            var encryptedValue = GetEncryptedValue(jObject);
-
+            
             jObject[_section] = JObject.Parse(JsonConvert.SerializeObject(decryptedObj));
 
             File.WriteAllText(physicalPath, JsonConvert.SerializeObject(jObject, Formatting.Indented));

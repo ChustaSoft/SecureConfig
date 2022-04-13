@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -25,9 +24,9 @@ namespace ChustaSoft.Tools.SecureConfig
                 {
                     var writableOptions = GetWritebleSettings<TSettings>(scope, environmentFile, settingsParamName);
 
-                    if (writableOptions.IsAlreadyEncrypted())
+                    if (writableOptions.IsAlreadyEncrypted)
                     {
-                        var decryptedConfiguration = GetDecryptedConfiguration<TSettings>(scope, settingsParamName);
+                        var decryptedConfiguration = GetDecryptedConfiguration<TSettings>(scope, writableOptions);
                         writableOptions.Apply(decryptedConfiguration);
                     }
                 }
@@ -43,9 +42,9 @@ namespace ChustaSoft.Tools.SecureConfig
                 {
                     var writableOptions = GetWritebleSettings<TSettings>(scope, environmentFile, settingsParamName);
 
-                    if (!writableOptions.IsAlreadyEncrypted())
+                    if (!writableOptions.IsAlreadyEncrypted)
                     {
-                        var encryptedConfiguration = GetEncryptedConfiguration<TSettings>(scope, settingsParamName);
+                        var encryptedConfiguration = GetEncryptedConfiguration(scope, writableOptions);
                         writableOptions.Apply(encryptedConfiguration);
                     }
                 }
@@ -67,24 +66,20 @@ namespace ChustaSoft.Tools.SecureConfig
             return writableOptions;
         }
 
-        private static string GetEncryptedConfiguration<TSettings>(IServiceScope scope, string settingsParamName)
+        private static string GetEncryptedConfiguration<TSettings>(IServiceScope scope, IWritableSettings<TSettings> writableSettings)
             where TSettings : class, new()
         {
-            var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-            var settings = config.GetSettings<TSettings>(settingsParamName);
             var encryptationKey = scope.ServiceProvider.GetRequiredService<EncryptionKey>().Key;
-            var encryptedConfiguration = EncrypterManager.Encrypt(settings, encryptationKey);
+            var encryptedConfiguration = EncrypterManager.Encrypt(writableSettings.DecryptedSettings, encryptationKey);
 
             return encryptedConfiguration;
         }
 
-        private static TSettings GetDecryptedConfiguration<TSettings>(IServiceScope scope, string settingsParamName)
+        private static TSettings GetDecryptedConfiguration<TSettings>(IServiceScope scope, IWritableSettings<TSettings> writableSettings)
             where TSettings : class, new()
         {
-            var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-            var encryptedValue = config.GetEncryptedValue(settingsParamName);
             var encryptationKey = scope.ServiceProvider.GetRequiredService<EncryptionKey>().Key;
-            var settings = EncrypterManager.Decrypt<TSettings>(encryptedValue, encryptationKey);
+            var settings = EncrypterManager.Decrypt<TSettings>(writableSettings.EncryptedSettings.EncryptedValue, encryptationKey);
 
             return settings;
         }
