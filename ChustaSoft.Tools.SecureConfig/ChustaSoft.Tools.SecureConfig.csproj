@@ -10,9 +10,9 @@
 		<Company>ChustaSoft</Company>
 		<RestoreProjectStyle>PackageReference</RestoreProjectStyle>
 		<PackageId>ChustaSoft.Tools.SecureConfig</PackageId>
-		<Version>1.4.2</Version>
-		<AssemblyVersion>1.4.2</AssemblyVersion>
-		<FileVersion>1.4.2</FileVersion>
+		<Version>1.5.0</Version>
+		<AssemblyVersion>1.5.0</AssemblyVersion>
+		<FileVersion>1.5.0</FileVersion>
 		<RepositoryUrl>https://github.com/ChustaSoft/SecureConfig.git</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/ChustaSoft/SecureConfig</PackageProjectUrl>
 		<PackageLicenseUrl>https://github.com/ChustaSoft/SecureConfig/blob/main/LICENSE</PackageLicenseUrl>
