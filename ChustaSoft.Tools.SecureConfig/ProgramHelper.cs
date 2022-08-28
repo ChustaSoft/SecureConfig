@@ -26,7 +26,7 @@ namespace ChustaSoft.Tools.SecureConfig
             return webApplication;
         }
 
-#elif (NETCOREAPP3_1 || NET5_0)
+#endif
 
         public static CommonHosting.IHost EncryptSettings<TSettings>(this CommonHosting.IHost host, bool encrypt = true, string settingsParamName = AppConstants.DEFAULT_SETTINGS_PARAM_NAME)
             where TSettings : class, new()
@@ -45,8 +45,6 @@ namespace ChustaSoft.Tools.SecureConfig
             return host;
         }
 
-#elif (NETCOREAPP2_1)
-
         public static AspNetHosting.IWebHost EncryptSettings<TSettings>(this AspNetHosting.IWebHost webHost, bool encrypt = true, string settingsParamName = AppConstants.DEFAULT_SETTINGS_PARAM_NAME)
             where TSettings : class, new()
         {
@@ -64,8 +62,8 @@ namespace ChustaSoft.Tools.SecureConfig
             return webHost;
         }
 
-#else
-#endif
+
+
 
     }
 }
